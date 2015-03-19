@@ -50,8 +50,8 @@ void clearMarked(Graph &g){};
    
 int main()
 {
-   try
-   {
+   //try
+   //{
       ifstream fin;
 
       // Read the maze from the file.
@@ -72,6 +72,6 @@ int main()
       Graph g;
       m.mapMazeToGraph(g);
 
-      cout << g << endl;
-   }
+      //cout << g << endl;
+   //}
 }

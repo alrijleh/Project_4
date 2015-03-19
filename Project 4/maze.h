@@ -10,10 +10,17 @@
 
 #include "d_except.h"
 #include "d_matrix.h"
+#include <boost/graph/adjacency_list.hpp>
 
 #define LargeValue 99999999
 
+using namespace boost;
 using namespace std;
+
+struct VertexProperties;
+struct EdgeProperties;
+
+typedef adjacency_list<vecS, vecS, bidirectionalS, VertexProperties, EdgeProperties> Graph;
 
 class maze
 {
@@ -21,10 +28,12 @@ public:
    maze(ifstream &fin);
    void print(int,int,int,int);
    bool isLegal(int i, int j);
+
    void mapMazeToGraph(Graph &g);
    void printPath(Graph::vertex_descriptor end,
                         stack<Graph::vertex_descriptor> &s,
                         Graph g);
+
    int numRows(){return rows;};
    int numCols(){return cols;};
 
@@ -101,9 +110,13 @@ bool maze::isLegal(int i, int j)
    return value[i][j];
 }
 
-void maze::mapMazeToGraph(Graph &g){}
+void maze::mapMazeToGraph(Graph &g)
 // Create a graph g that represents the legal moves in the maze m.
+{
 
-void maze::printPath(Graph::vertex_descriptor end,
-	stack<Graph::vertex_descriptor> &s,
-	Graph g){}
+}
+
+void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descriptor> &s, Graph g)
+{
+
+}
