@@ -58,3 +58,6 @@
 *.xml
 *.psess
 *.vsp
+
+#Boost Directory
+boost_1_57_0/
