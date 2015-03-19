@@ -25,17 +25,29 @@ typedef adjacency_list<vecS, vecS, bidirectionalS, VertexProperties, EdgePropert
 class maze
 {
 public:
+	//Constructor
    maze(ifstream &fin);
+
+   //Print
    void print(int,int,int,int);
+   
+   //Determine if legal to move to cell
    bool isLegal(int i, int j);
 
+   //Create mapping of board to graph
    void mapMazeToGraph(Graph &g);
+   void setMap(int i, int j, int n);
+   int getMap(int i, int j);
+   
    void printPath(Graph::vertex_descriptor end,
                         stack<Graph::vertex_descriptor> &s,
                         Graph g);
-
+   
+   //Number of rows and columns
    int numRows(){return rows;};
    int numCols(){return cols;};
+
+   
 
 private:
    int rows; // number of rows in the maze
@@ -113,7 +125,18 @@ bool maze::isLegal(int i, int j)
 void maze::mapMazeToGraph(Graph &g)
 // Create a graph g that represents the legal moves in the maze m.
 {
+	g = Graph();
 
+	int counter = 0;
+
+	//Mapping of graph
+	for (int i = 0; i < numRows(); i++)
+	{
+		for (int j = 0; j < numCols(); j++)
+		{
+			setMap(i, j, counter++);
+		}
+	}
 }
 
 void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descriptor> &s, Graph g)
