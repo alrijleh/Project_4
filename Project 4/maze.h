@@ -33,6 +33,7 @@ private:
    int cols; // number of columns in the maze12 a
    
    matrix<bool> value;
+   matrix<Graph::vertex_descriptor> vMap;
 };
 
 maze::maze(ifstream &fin)
@@ -100,9 +101,9 @@ bool maze::isLegal(int i, int j)
    return value[i][j];
 }
 
-void maze::mapMazeToGraph(Graph &g)
+void maze::mapMazeToGraph(Graph &g){}
 // Create a graph g that represents the legal moves in the maze m.
 
 void maze::printPath(Graph::vertex_descriptor end,
-                     stack<Graph::vertex_descriptor> &s,
-                     Graph g)
+	stack<Graph::vertex_descriptor> &s,
+	Graph g){}
