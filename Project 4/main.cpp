@@ -8,9 +8,6 @@
 #include <boost/graph/adjacency_list.hpp>
 //#include "heapV.h"
 #include "maze.h"
-#include "graph.h"
-#include "node.h"
-#include "edge.h"
 
 using namespace boost;
 using namespace std;
@@ -45,8 +42,6 @@ typedef adjacency_list<vecS, vecS, bidirectionalS, VertexProperties, EdgePropert
 
 void clearVisited(Graph &g)
 {
-	for (int i = 0; i < numNodes(); i++)
-		nodes[i].unVisit();
 };
 // Mark all nodes in g as not visited.
 

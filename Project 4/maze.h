@@ -10,6 +10,7 @@
 
 #include "d_except.h"
 #include "d_matrix.h"
+#include "node.h"
 #include <boost/graph/adjacency_list.hpp>
 
 #define LargeValue 99999999
@@ -39,6 +40,10 @@ public:
    void setMap(int i, int j, int n);
    int getMap(int i, int j);
    
+   //Gets individual row and col of mapping node
+   int getMapI(int n);
+   int getMapJ(int n);
+   
    void printPath(Graph::vertex_descriptor end,
                         stack<Graph::vertex_descriptor> &s,
                         Graph g);
@@ -55,6 +60,8 @@ private:
    
    matrix<bool> value;
    matrix<Graph::vertex_descriptor> vMap;
+
+   Graph g;
 };
 
 maze::maze(ifstream &fin)
@@ -78,6 +85,32 @@ maze::maze(ifstream &fin)
       }
    
    vMap.resize(rows,cols);
+}
+
+void maze::setMap(int i, int j, int n)
+{
+	node newNode = node();
+	if (value[i][j])
+	{
+		newNode.mark();
+	}
+	newNode.setId(n);
+}
+int maze::getMap(int i, int j)
+{
+	return i * cols + j;
+}
+
+int maze::getMapI(int n) 
+// Return i value of node mapping
+{
+	return n / numCols();
+}
+
+int maze::getMapJ(int n) 
+// Return j value of node mapping
+{
+	return n % numCols();
 }
 
 void maze::print(int goalI, int goalJ, int currI, int currJ)
@@ -141,5 +174,8 @@ void maze::mapMazeToGraph(Graph &g)
 
 void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descriptor> &s, Graph g)
 {
-
+	for (int i = s.size(); i > 0; i++)
+	{
+		print(numRows() - 1, numCols() - 1, getMapI(s.pop), getMapJ(s.pop));
+	}
 }
