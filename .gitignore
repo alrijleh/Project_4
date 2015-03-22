@@ -58,6 +58,7 @@
 *.xml
 *.psess
 *.vsp
+*.vcxproj*
 
 #Boost Directory
 boost_1_57_0/
