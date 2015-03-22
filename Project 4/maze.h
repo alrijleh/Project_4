@@ -27,31 +27,39 @@ class maze
 {
 public:
 	//Constructor
-   maze(ifstream &fin);
+	maze(ifstream &fin);
 
-   //Print
-   void print(int,int,int,int);
+	//Print
+	void print(int,int,int,int);
    
-   //Determine if legal to move to cell
-   bool isLegal(int i, int j);
+	//Determine if legal to move to cell
+	bool isLegal(int i, int j);
 
-   //Create mapping of board to graph
-   void mapMazeToGraph(Graph &g);
-   void setMap(int i, int j, int n);
-   int getMap(int i, int j);
+	//Create mapping of board to graph
+	void mapMazeToGraph(Graph &g);
+	void setMap(int i, int j, int n);
+	int getMap(int i, int j);
    
-   //Gets individual row and col of mapping node
-   int getMapI(int n);
-   int getMapJ(int n);
+	//Gets individual row and col of mapping node
+	int getMapI(int n);
+	int getMapJ(int n);
    
-   void printPath(Graph::vertex_descriptor end,
-                        stack<Graph::vertex_descriptor> &s,
-                        Graph g);
+	void printPath(Graph::vertex_descriptor end,
+						stack<Graph::vertex_descriptor> &s,
+						Graph g);
    
-   //Number of rows and columns
-   int numRows(){return rows;};
-   int numCols(){return cols;};
+	//Number of rows and columns
+	int numRows(){return rows;};
+	int numCols(){return cols;};
 
+	// Mark all nodes in g as not visited.
+	void clearVisited(Graph &g);
+	
+	// Set all node weights to w.
+	void setNodeWeights(Graph &g, int w);
+	
+	// Mark all nodes in g as not marked
+	void clearMarked(Graph &g);
    
 
 private:
@@ -158,7 +166,7 @@ bool maze::isLegal(int i, int j)
 void maze::mapMazeToGraph(Graph &g)
 // Create a graph g that represents the legal moves in the maze m.
 {
-	g = Graph();
+	g = Graph(); //Wouldn't this create a new Graph object?
 
 	int counter = 0;
 
@@ -178,4 +186,22 @@ void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descripto
 	{
 		print(numRows() - 1, numCols() - 1, getMapI(s.pop), getMapJ(s.pop));
 	}
+}
+
+// Mark all nodes in g as not visited.
+void maze::clearVisited(Graph &g)
+{
+
+}
+
+// Set all node weights to w.
+void maze::setNodeWeights(Graph &g, int w)
+{
+	
+}
+
+
+void maze::clearMarked(Graph &g)
+{
+
 }
