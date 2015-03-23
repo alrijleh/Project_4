@@ -182,26 +182,47 @@ void maze::mapMazeToGraph(Graph &g)
 
 void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descriptor> &s, Graph g)
 {
-	for (int i = s.size(); i > 0; i++)
+	for (int i = s.size(); i > 0; i--)
 	{
-		print(numRows() - 1, numCols() - 1, getMapI(s.pop), getMapJ(s.pop));
+		print(numRows() - 1, numCols() - 1, getMapI(s._Get_container[i]), getMapJ(s._Get_container[i]));
+
+		if (i == 0)
+			cout << "Complete" << endl;
+
+		else if (i > 0 && s._Get_container[i - 1] == s._Get_container[i] + 1)
+			cout << "Move Right" << endl;
+
+		else if (i > 0 && s._Get_container[i - 1] == s._Get_container[i] - 1)
+			cout << "Move Left" << endl;
+
+		else if (i > 0 && s._Get_container[i - 1] == s._Get_container[i] - numCols())
+			cout << "Move Up" << endl;
+
+		else if (i > 0 && s._Get_container[i - 1] == s._Get_container[i] + numCols())
+			cout << "Move Down" << endl;
 	}
 }
 
 // Mark all nodes in g as not visited.
 void maze::clearVisited(Graph &g)
 {
-
+	//How to parse through all nodes in Graph g?
+	node newNode;
+	newNode.unVisit();
 }
 
 // Set all node weights to w.
 void maze::setNodeWeights(Graph &g, int w)
 {
-	
+	//How to parse through all nodes in Graph g?
+	node newNode;
+	newNode.setWeight(w);
 }
 
 
 void maze::clearMarked(Graph &g)
 {
-
+	//How to parse through all nodes in Graph g?
+	node newNode;
+	newNode.unMark();
 }
