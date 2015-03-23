@@ -206,6 +206,7 @@ void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descripto
 // Mark all nodes in g as not visited.
 void maze::clearVisited(Graph &g)
 {
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
 		g[*vItr].visited = false;
@@ -215,6 +216,7 @@ void maze::clearVisited(Graph &g)
 // Set all node weights to w.
 void maze::setNodeWeights(Graph &g, int w)
 {
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
 		g[*vItr].weight = w;
@@ -224,6 +226,7 @@ void maze::setNodeWeights(Graph &g, int w)
 
 void maze::clearMarked(Graph &g)
 {
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
 		g[*vItr].marked = false;
