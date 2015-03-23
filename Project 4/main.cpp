@@ -48,7 +48,7 @@ int main()
       ifstream fin;
 
       // Read the maze from the file.
-      string fileName = "/Users/wmeleis/2560-code/path/path/maze1.txt";
+      string fileName = "maze1.txt";
       
       fin.open(fileName.c_str());
       if (!fin)

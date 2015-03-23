@@ -232,3 +232,29 @@ void maze::clearMarked(Graph &g)
 		g[*vItr].marked = false;
 	}
 }
+
+ostream &operator<<(ostream &ostr, const Graph &g)
+//Output operator for the Graph class. Prints out all nodes and their properties, 
+//and all edges and their properties.
+{
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
+	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
+	{
+
+		cout << "Node Properties" << endl;
+		cout << "Marked: " << g[*vItr].marked << endl;
+		cout << "Visited: " << g[*vItr].visited  << endl;
+		cout << "Weight: " << g[*vItr].weight << endl << endl;
+	}
+
+	pair<Graph::edge_iterator, Graph::edge_iterator> eItrRange = edges(g);
+	for (Graph::edge_iterator eItr = eItrRange.first; eItr != eItrRange.second; ++eItr)
+	{
+
+		cout << "Node Properties" << endl;
+		cout << "Marked: " << g[*eItr].marked << endl;
+		cout << "Visited: " << g[*eItr].visited << endl;
+		cout << "Weight: " << g[*eItr].weight << endl << endl;
+	}
+	
+}
