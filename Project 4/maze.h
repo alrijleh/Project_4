@@ -182,7 +182,6 @@ void maze::mapMazeToGraph(Graph &g)
 			{
 				setMap(i, j, counter++);
 			}
-			
 		}
 	}
 }
