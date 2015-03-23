@@ -62,6 +62,8 @@ public:
 	// Mark all nodes in g as not marked
 	void clearMarked(Graph &g);
 
+	//Add edges to graph
+	void checkEdges(Graph g, int i, int j);
 
 private:
 	int rows; // number of rows in the maze
@@ -93,7 +95,7 @@ maze::maze(ifstream &fin)
 				value[i][j] = false;
 		}
 
-	vMap.resize(rows, cols);
+	vMap.resize(rows, cols, LargeValue);
 }
 
 void maze::setMap(int i, int j, int n)
@@ -108,6 +110,7 @@ void maze::setMap(int i, int j, int n)
 	typedef graph_traits<Graph>::vertex_descriptor Vertex;
 	Vertex v = add_vertex(g);
 	vMap[i][j] = v;
+
 }
 
 int maze::getMap(int i, int j)
@@ -182,8 +185,37 @@ void maze::mapMazeToGraph(Graph &g)
 			if (value[i][j])
 			{
 				setMap(i, j, counter++);
+				//checkEdges(g, i, j);
 			}
 		}
+	}
+}
+
+void maze::checkEdges(Graph g, int i, int j)
+{
+	if (i - 1 > 0) if (vMap[i - 1][j] != LargeValue) //left
+	{
+		typedef graph_traits<Graph>::edge_descriptor Edge;
+		Edge e;
+		add_edge(i - 1, j, g);
+	}
+	if (i + 1 < cols) if (vMap[i + 1][j] != LargeValue) //right
+	{
+		typedef graph_traits<Graph>::edge_descriptor Edge;
+		Edge e;
+		add_edge(i + 1, j, g);
+	}
+	if (j - 1 > 0) if (vMap[i][j - 1] != LargeValue) //up
+	{
+		typedef graph_traits<Graph>::edge_descriptor Edge;
+		Edge e;
+		add_edge(i, j - 1, g);
+	}
+	if (j + 1 < rows) if (vMap[i][j + 1] != LargeValue) //down
+	{
+		typedef graph_traits<Graph>::edge_descriptor Edge;
+		Edge e;
+		add_edge(i, j + 1, g);
 	}
 }
 
