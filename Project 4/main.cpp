@@ -23,28 +23,30 @@ int main()
 {
    //try
    //{
-      ifstream fin;
-
       // Read the maze from the file.
-      string fileName = "maze1.txt";
-      
+	ifstream fin;
+      string fileName = "maze1.txt";  
       fin.open(fileName.c_str());
       if (!fin)
       {
          cerr << "Cannot open " << fileName << endl;
          exit(1);
       }
+	  fin.close();
 
+	  //initialize maze
       maze m(fin);
-      fin.close();
       
+	  //print maze
       m.print(m.numRows()-1,m.numCols()-1,0,0);
 
+	  //map stuff -- should be moved
       Graph g;
       m.mapMazeToGraph(g);
 
-	  system("pause");
+		//print nodes
+	  cout << g << endl;
 
-      //cout << g << endl;
+	  system("pause");
    //}
 }

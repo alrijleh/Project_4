@@ -269,7 +269,7 @@ ostream &operator<<(ostream &ostr, const Graph &g)
 		ostr << "Edge Properties" << endl;
 		ostr << "Marked: " << g[*eItr].marked << endl;
 		ostr << "Visited: " << g[*eItr].visited << endl;
-		ostr << "Weight: " << g[*eItr].weight << endl << endl;
+		ostr << "Weight: " << g[*eItr].weight << endl;
 	}
 	
 	return ostr;
