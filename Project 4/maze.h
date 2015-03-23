@@ -30,8 +30,8 @@ public:
 	maze(ifstream &fin);
 
 	//Print
-	void print(int,int,int,int);
-   
+	void print(int, int, int, int);
+
 	//Determine if legal to move to cell
 	bool isLegal(int i, int j);
 
@@ -39,60 +39,60 @@ public:
 	void mapMazeToGraph(Graph &g);
 	void setMap(int i, int j, int n);
 	int getMap(int i, int j);
-   
+
 	//Gets individual row and col of mapping node
 	int getMapI(int n);
 	int getMapJ(int n);
-   
+
 	void printPath(Graph::vertex_descriptor end,
-						stack<Graph::vertex_descriptor> &s,
-						Graph g);
-   
+		stack<Graph::vertex_descriptor> &stack,
+		Graph g);
+
 	//Number of rows and columns
-	int numRows(){return rows;};
-	int numCols(){return cols;};
+	int numRows(){ return rows; };
+	int numCols(){ return cols; };
 
 	// Mark all nodes in g as not visited.
 	void clearVisited(Graph &g);
-	
+
 	// Set all node weights to w.
 	void setNodeWeights(Graph &g, int w);
-	
+
 	// Mark all nodes in g as not marked
 	void clearMarked(Graph &g);
-   
+
 
 private:
-   int rows; // number of rows in the maze
-   int cols; // number of columns in the maze12 a
-   
-   matrix<bool> value;
-   matrix<Graph::vertex_descriptor> vMap;
+	int rows; // number of rows in the maze
+	int cols; // number of columns in the maze12 a
 
-   Graph g;
+	matrix<bool> value;
+	matrix<Graph::vertex_descriptor> vMap;
+
+	Graph g;
 };
 
 maze::maze(ifstream &fin)
 // Initializes a maze by reading values from fin.  Assumes that the
 // number of rows and columns indicated in the file are correct.
 {
-   fin >> rows;
-   fin >> cols;
-   
-   char x;
-   
-   value.resize(rows,cols);
-   for (int i = 0; i <= rows-1; i++)
-      for (int j = 0; j <= cols-1; j++)
-      {
-         fin >> x;
-         if (x == 'O')
-            value[i][j] = true;
-         else
-            value[i][j] = false;
-      }
-   
-   vMap.resize(rows,cols);
+	fin >> rows;
+	fin >> cols;
+
+	char x;
+
+	value.resize(rows, cols);
+	for (int i = 0; i <= rows - 1; i++)
+		for (int j = 0; j <= cols - 1; j++)
+		{
+			fin >> x;
+			if (x == 'O')
+				value[i][j] = true;
+			else
+				value[i][j] = false;
+		}
+
+	vMap.resize(rows, cols);
 }
 
 void maze::setMap(int i, int j, int n)
@@ -109,58 +109,58 @@ int maze::getMap(int i, int j)
 	return i * cols + j;
 }
 
-int maze::getMapI(int n) 
+int maze::getMapI(int n)
 // Return i value of node mapping
 {
-	return n / numCols();
+	return n / cols;
 }
 
-int maze::getMapJ(int n) 
+int maze::getMapJ(int n)
 // Return j value of node mapping
 {
-	return n % numCols();
+	return n % cols;
 }
 
 void maze::print(int goalI, int goalJ, int currI, int currJ)
 // Print out a maze, with the goal and current cells marked on the
 // board.
 {
-   cout << endl;
+	cout << endl;
 
-   if (goalI < 0 || goalI > rows || goalJ < 0 || goalJ > cols)
-      throw rangeError("Bad value in maze::print");
+	if (goalI < 0 || goalI > rows || goalJ < 0 || goalJ > cols)
+		throw rangeError("Bad value in maze::print");
 
-   if (currI < 0 || currI > rows || currJ < 0 || currJ > cols)
-      throw rangeError("Bad value in maze::print");
+	if (currI < 0 || currI > rows || currJ < 0 || currJ > cols)
+		throw rangeError("Bad value in maze::print");
 
-   for (int i = 0; i <= rows-1; i++)
-   {
-      for (int j = 0; j <= cols-1; j++)
-      {
-	 if (i == goalI && j == goalJ)
-	    cout << "*";
-	 else
-	    if (i == currI && j == currJ)
-	       cout << "+";
-	    else
-	       if (value[i][j])
-		  cout << " ";
-	       else
-		  cout << "X";	  
-      }
-      cout << endl;
-   }
-   cout << endl;
+	for (int i = 0; i <= rows - 1; i++)
+	{
+		for (int j = 0; j <= cols - 1; j++)
+		{
+			if (i == goalI && j == goalJ)
+				cout << "*";
+			else
+				if (i == currI && j == currJ)
+					cout << "+";
+				else
+					if (value[i][j])
+						cout << " ";
+					else
+						cout << "X";
+		}
+		cout << endl;
+	}
+	cout << endl;
 }
 
 bool maze::isLegal(int i, int j)
 // Return the value stored at the (i,j) entry in the maze, indicating
 // whether it is legal to go to cell (i,j).
 {
-   if (i < 0 || i > rows || j < 0 || j > cols)
-      throw rangeError("Bad value in maze::isLegal");
+	if (i < 0 || i > rows || j < 0 || j > cols)
+		throw rangeError("Bad value in maze::isLegal");
 
-   return value[i][j];
+	return value[i][j];
 }
 
 void maze::mapMazeToGraph(Graph &g)
@@ -180,26 +180,34 @@ void maze::mapMazeToGraph(Graph &g)
 	}
 }
 
-void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descriptor> &s, Graph g)
+void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descriptor> &stack, Graph g)
 {
-	for (int i = s.size(); i > 0; i--)
-	{
-		print(numRows() - 1, numCols() - 1, getMapI(s._Get_container[i]), getMapJ(s._Get_container[i]));
+	int goalI, goalJ, currI, currJ;
+	goalI = rows - 1;
+	goalJ = cols - 1;
 
+	for (int i = stack.size(); i > 0; i--)
+	{
+		currI = getMapI(stack.top());
+		currJ = getMapJ(stack.top());
+		stack.pop();
+		print(goalI, goalJ, currI, currJ);
+		/*
 		if (i == 0)
 			cout << "Complete" << endl;
 
-		else if (i > 0 && s._Get_container[i - 1] == s._Get_container[i] + 1)
+		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] + 1)
 			cout << "Move Right" << endl;
 
-		else if (i > 0 && s._Get_container[i - 1] == s._Get_container[i] - 1)
+		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] - 1)
 			cout << "Move Left" << endl;
 
-		else if (i > 0 && s._Get_container[i - 1] == s._Get_container[i] - numCols())
+		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] - numCols())
 			cout << "Move Up" << endl;
 
-		else if (i > 0 && s._Get_container[i - 1] == s._Get_container[i] + numCols())
+		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] + numCols())
 			cout << "Move Down" << endl;
+			*/
 	}
 }
 
