@@ -38,7 +38,7 @@ public:
 
 	//Create mapping of board to graph
 	void mapMazeToGraph(Graph &g);
-	node setMap(int i, int j, int n);
+	void setMap(int i, int j, int n);
 	int getMap(int i, int j);
 
 	//Gets individual row and col of mapping node
@@ -96,7 +96,7 @@ maze::maze(ifstream &fin)
 	vMap.resize(rows, cols);
 }
 
-node maze::setMap(int i, int j, int n)
+void maze::setMap(int i, int j, int n)
 {
 	node newNode = node();
 	if (value[i][j])
@@ -104,9 +104,10 @@ node maze::setMap(int i, int j, int n)
 		newNode.mark();
 	}
 	newNode.setId(n);
-	g.added_vertex(newNode.getId());
 
-	return newNode;
+	typedef graph_traits<Graph>::vertex_descriptor Vertex;
+	Vertex v = add_vertex(g);
+	vMap[i][j] = v;
 }
 
 int maze::getMap(int i, int j)
