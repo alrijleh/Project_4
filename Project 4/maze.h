@@ -200,20 +200,20 @@ void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descripto
 		print(goalI, goalJ, currI, currJ);
 		/*
 		if (i == 0)
-			cout << "Complete" << endl;
+		cout << "Complete" << endl;
 
 		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] + 1)
-			cout << "Move Right" << endl;
+		cout << "Move Right" << endl;
 
 		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] - 1)
-			cout << "Move Left" << endl;
+		cout << "Move Left" << endl;
 
 		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] - numCols())
-			cout << "Move Up" << endl;
+		cout << "Move Up" << endl;
 
 		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] + numCols())
-			cout << "Move Down" << endl;
-			*/
+		cout << "Move Down" << endl;
+		*/
 	}
 }
 
@@ -255,7 +255,7 @@ ostream &operator<<(ostream &ostr, const Graph &g)
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
 
-		ostr << "Node Properties" << endl;
+		ostr << "Node " << *vItr << " Properties" << endl;
 		ostr << "Marked: " << g[*vItr].marked << endl;
 		ostr << "Visited: " << g[*vItr].visited << endl;
 		ostr << "Weight: " << g[*vItr].weight << endl << endl;
@@ -265,11 +265,11 @@ ostream &operator<<(ostream &ostr, const Graph &g)
 	for (Graph::edge_iterator eItr = eItrRange.first; eItr != eItrRange.second; ++eItr)
 	{
 
-		ostr << "Edge Properties" << endl;
+		ostr << "Edge " << *eItr << " Properties" << endl;
 		ostr << "Marked: " << g[*eItr].marked << endl;
 		ostr << "Visited: " << g[*eItr].visited << endl;
 		ostr << "Weight: " << g[*eItr].weight << endl << endl;
 	}
-	
+
 	return ostr;
 }
