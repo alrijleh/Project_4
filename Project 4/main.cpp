@@ -13,29 +13,7 @@
 using namespace boost;
 using namespace std;
 
-struct VertexProperties;
-struct EdgeProperties;
 
-typedef adjacency_list<vecS, vecS, bidirectionalS, VertexProperties, EdgeProperties> Graph;
-
-struct VertexProperties
-{
-   pair<int,int> cell; // maze cell (x,y) value
-   Graph::vertex_descriptor pred;
-   bool visited;
-   bool marked;
-   int weight;
-};
-
-// Create a struct to hold properties for each edge
-struct EdgeProperties
-{
-   int weight;
-   bool visited;
-   bool marked;
-};
-
-typedef adjacency_list<vecS, vecS, bidirectionalS, VertexProperties, EdgeProperties> Graph;
 
 // typedef property<edge_weight_t, int> EdgeProperty;
 
