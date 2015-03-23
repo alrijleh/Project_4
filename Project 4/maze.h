@@ -8,6 +8,7 @@
 #include <vector>
 #include <stack>
 
+#include "Properties.h"
 #include "d_except.h"
 #include "d_matrix.h"
 #include "node.h"
