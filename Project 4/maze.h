@@ -206,23 +206,26 @@ void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descripto
 // Mark all nodes in g as not visited.
 void maze::clearVisited(Graph &g)
 {
-	//How to parse through all nodes in Graph g?
-	node newNode;
-	newNode.unVisit();
+	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
+	{
+		g[*vItr].visited = false;
+	}
 }
 
 // Set all node weights to w.
 void maze::setNodeWeights(Graph &g, int w)
 {
-	//How to parse through all nodes in Graph g?
-	node newNode;
-	newNode.setWeight(w);
+	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
+	{
+		g[*vItr].weight = w;
+	}
 }
 
 
 void maze::clearMarked(Graph &g)
 {
-	//How to parse through all nodes in Graph g?
-	node newNode;
-	newNode.unMark();
+	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
+	{
+		g[*vItr].marked = false;
+	}
 }
