@@ -38,7 +38,7 @@ public:
 
 	//Create mapping of board to graph
 	void mapMazeToGraph(Graph &g);
-	void setMap(int i, int j, int n);
+	node setMap(int i, int j, int n);
 	int getMap(int i, int j);
 
 	//Gets individual row and col of mapping node
@@ -96,7 +96,7 @@ maze::maze(ifstream &fin)
 	vMap.resize(rows, cols);
 }
 
-void maze::setMap(int i, int j, int n)
+node maze::setMap(int i, int j, int n)
 {
 	node newNode = node();
 	if (value[i][j])
@@ -104,7 +104,11 @@ void maze::setMap(int i, int j, int n)
 		newNode.mark();
 	}
 	newNode.setId(n);
+	g.added_vertex(newNode.getId());
+
+	return newNode;
 }
+
 int maze::getMap(int i, int j)
 {
 	return i * cols + j;
@@ -117,14 +121,13 @@ int maze::getMapI(int n)
 }
 
 int maze::getMapJ(int n)
-// Return j value of node mapping
+//Return j value of node mapping
 {
 	return n % cols;
 }
 
 void maze::print(int goalI, int goalJ, int currI, int currJ)
-// Print out a maze, with the goal and current cells marked on the
-// board.
+//Print out a maze, with the goal and current cells marked on the board.
 {
 	cout << endl;
 
@@ -165,10 +168,9 @@ bool maze::isLegal(int i, int j)
 }
 
 void maze::mapMazeToGraph(Graph &g)
-// Create a graph g that represents the legal moves in the maze m.
+//Create a graph g that represents the legal moves in the maze m.
 {
-	g = Graph(); //Wouldn't this create a new Graph object?
-
+	g = Graph();
 	int counter = 0;
 
 	//Mapping of graph
@@ -176,7 +178,11 @@ void maze::mapMazeToGraph(Graph &g)
 	{
 		for (int j = 0; j < numCols(); j++)
 		{
-			setMap(i, j, counter++);
+			if (value[i][j])
+			{
+				setMap(i, j, counter++);
+			}
+			
 		}
 	}
 }

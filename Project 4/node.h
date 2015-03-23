@@ -42,7 +42,7 @@ private:
 };
 
 node::node()
-// Constructor, creates a new, uninitialized node. Id is initialized by the graph constructor
+//Constructor, creates a new, uninitialized node. Id is initialized by the graph constructor
 {
 	unMark();
 	unVisit();
@@ -50,7 +50,7 @@ node::node()
 }
 
 node::node(const node &n)
-// Copy constructor
+//Copy constructor
 {
 	setNode(n.getId(), n.getWeight(), n.isMarked(), n.isVisited());
 }

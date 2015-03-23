@@ -43,6 +43,8 @@ int main()
       Graph g;
       m.mapMazeToGraph(g);
 
+	  system("pause");
+
       //cout << g << endl;
    //}
 }
