@@ -49,6 +49,9 @@ public:
 	int getMapI(int n);
 	int getMapJ(int n);
 
+	//Add edges to graph
+	void checkEdges(Graph g, int i, int j);
+
 	//Print moves to complete maze
 	void printPath(Graph::vertex_descriptor end,
 		stack<Graph::vertex_descriptor> &stack,
@@ -87,7 +90,7 @@ maze::maze(ifstream &fin)
 
 	char x;
 
-	value.resize(rows, cols);
+	value.resize(rows, cols, LargeValue);
 	for (int i = 0; i <= rows - 1; i++)
 		for (int j = 0; j <= cols - 1; j++)
 		{
@@ -189,8 +192,29 @@ void maze::mapMazeToGraph(Graph &g)
 			if (value[i][j])
 			{
 				setMap(i, j, counter++);
+				//checkEdges(g, i, j);
 			}
 		}
+	}
+}
+
+void maze::checkEdges(Graph g, int i, int j)
+{
+	if (i - 1 > 0) if (vMap[i - 1][j] != LargeValue) //left
+	{
+		add_edge(i - 1, j, g);
+	}
+	if (i + 1 < cols) if (vMap[i + 1][j] != LargeValue) //right
+	{
+		add_edge(i + 1, j, g);
+	}
+	if (j - 1 > 0) if (vMap[i][j - 1] != LargeValue) //up
+	{
+		add_edge(i, j - 1, g);
+	}
+	if (j + 1 < rows) if (vMap[i][j + 1] != LargeValue) //down
+	{
+		add_edge(i, j + 1, g);
 	}
 }
 
