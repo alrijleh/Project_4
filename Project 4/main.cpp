@@ -18,35 +18,32 @@ using namespace std;
 // typedef property<edge_weight_t, int> EdgeProperty;
 
 #define LargeValue 99999999
-   
+
 int main()
 {
-   //try
-   //{
-      // Read the maze from the file.
+	//try
+	//{
 	ifstream fin;
-      string fileName = "maze1.txt";  
-      fin.open(fileName.c_str());
-      if (!fin)
-      {
-         cerr << "Cannot open " << fileName << endl;
-         exit(1);
-      }
-	  fin.close();
 
-	  //initialize maze
-      maze m(fin);
-      
-	  //print maze
-      m.print(m.numRows()-1,m.numCols()-1,0,0);
+	// Read the maze from the file.
+	string fileName = "maze1.txt";
 
-	  //map stuff -- should be moved
-      Graph g;
-      m.mapMazeToGraph(g);
+	fin.open(fileName.c_str());
+	if (!fin)
+	{
+		cerr << "Cannot open " << fileName << endl;
+		exit(1);
+	}
 
-		//print nodes
-	  cout << g << endl;
+	maze m(fin);
+	fin.close();
 
-	  system("pause");
-   //}
+	m.print(m.numRows() - 1, m.numCols() - 1, 0, 0);
+
+	Graph g;
+	m.mapMazeToGraph(g);
+
+	cout << g << endl;
+
+	system("pause");
 }
