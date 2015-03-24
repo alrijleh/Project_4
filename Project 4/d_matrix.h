@@ -33,7 +33,7 @@ class matrix
    int cols() const;
    // return number of columns
 
-   void resize(int numRows, int numCols);
+   void resize(int numRows, int numCols, int value = 0);
    // modify the matrix size.
    // Postcondition: the matrix has size numRows x numCols.
    // any new elements are filled with the default value of type T
@@ -90,7 +90,7 @@ int matrix<T>::cols() const
 }
 
 template <typename T>
-void matrix<T>::resize(int numRows, int numCols)
+void matrix<T>::resize(int numRows, int numCols, int value=0)
 {
    int i;
    
