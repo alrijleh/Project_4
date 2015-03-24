@@ -1,5 +1,10 @@
-#pragma once
+/*
+Node.h
+Contains declarations and definitions for the node class
 
+Fouad Al-Rijleh, Rachel Rudolph
+*/
+#pragma once
 #include <iostream>
 #include <fstream>
 #include "d_matrix.h"
@@ -41,41 +46,41 @@ private:
 	bool visited;
 };
 
+//Constructor that creates a new, uninitialized node
 node::node()
-//Constructor, creates a new, uninitialized node. Id is initialized by the graph constructor
 {
 	unMark();
 	unVisit();
 	setWeight(0);
 }
 
-node::node(const node &n)
 //Copy constructor
+node::node(const node &n)
 {
 	setNode(n.getId(), n.getWeight(), n.isMarked(), n.isVisited());
 }
 
+//Overloaded assignment operator.
 node &node::operator=(const node &n)
-// Overloaded assignment operator.
 {
 	setNode(n.getId(), n.getWeight(), n.isMarked(), n.isVisited());
 	return *this;
 }
 
+//Return node weight
 NodeWeight node::getWeight() const
-// Return node weight
 {
 	return weight;
 }
 
+//Set node weight to w
 void node::setWeight(NodeWeight w)
-// Set node weight to w.
 {
 	weight = w;
 }
 
+//Set node's id to i and throws an exception if i < 0
 void node::setId(int i)
-// Set node's id to i.  Throws an exception if i < 0.
 {
 	if (i < 0)
 		throw rangeError("Bad value in node::setId");

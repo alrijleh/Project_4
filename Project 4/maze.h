@@ -1,5 +1,9 @@
-// Sample solution for project #5
+/*
+Maze.h
+Contains declarations and definitions for the maze class
 
+Fouad Al-Rijleh, Rachel Rudolph
+*/
 #include <iostream>
 #include <limits.h>
 #include <list>
@@ -45,6 +49,7 @@ public:
 	int getMapI(int n);
 	int getMapJ(int n);
 
+	//Print moves to complete maze
 	void printPath(Graph::vertex_descriptor end,
 		stack<Graph::vertex_descriptor> &stack,
 		Graph g);
@@ -53,19 +58,19 @@ public:
 	int numRows(){ return rows; };
 	int numCols(){ return cols; };
 
-	// Mark all nodes in g as not visited.
+	//Mark all nodes in g as not visited.
 	void clearVisited(Graph &g);
 
-	// Set all node weights to w.
+	//Set all node weights to w.
 	void setNodeWeights(Graph &g, int w);
 
-	// Mark all nodes in g as not marked
+	//Mark all nodes in g as not marked
 	void clearMarked(Graph &g);
 
 
 private:
-	int rows; // number of rows in the maze
-	int cols; // number of columns in the maze12 a
+	int rows; //number of rows in the maze
+	int cols; //number of columns in the maze
 
 	matrix<bool> value;
 	matrix<Graph::vertex_descriptor> vMap;
@@ -73,9 +78,9 @@ private:
 	Graph g;
 };
 
+//Initializes a maze by reading values from fin.  Assumes that the
+//number of rows and columns indicated in the file are correct.
 maze::maze(ifstream &fin)
-// Initializes a maze by reading values from fin.  Assumes that the
-// number of rows and columns indicated in the file are correct.
 {
 	fin >> rows;
 	fin >> cols;
@@ -96,6 +101,7 @@ maze::maze(ifstream &fin)
 	vMap.resize(rows, cols);
 }
 
+//Sets Map
 void maze::setMap(int i, int j, int n)
 {
 	node newNode = node();
@@ -110,25 +116,26 @@ void maze::setMap(int i, int j, int n)
 	vMap[i][j] = v;
 }
 
+//Return Map
 int maze::getMap(int i, int j)
 {
 	return i * cols + j;
 }
 
-int maze::getMapI(int n)
 // Return i value of node mapping
+int maze::getMapI(int n)
 {
 	return n / cols;
 }
 
-int maze::getMapJ(int n)
 //Return j value of node mapping
+int maze::getMapJ(int n)
 {
 	return n % cols;
 }
 
-void maze::print(int goalI, int goalJ, int currI, int currJ)
 //Print out a maze, with the goal and current cells marked on the board.
+void maze::print(int goalI, int goalJ, int currI, int currJ)
 {
 	cout << endl;
 
@@ -158,9 +165,9 @@ void maze::print(int goalI, int goalJ, int currI, int currJ)
 	cout << endl;
 }
 
+//Return the value stored at the (i,j) entry in the maze, indicating
+//whether it is legal to go to cell (i,j).
 bool maze::isLegal(int i, int j)
-// Return the value stored at the (i,j) entry in the maze, indicating
-// whether it is legal to go to cell (i,j).
 {
 	if (i < 0 || i > rows || j < 0 || j > cols)
 		throw rangeError("Bad value in maze::isLegal");
@@ -168,8 +175,8 @@ bool maze::isLegal(int i, int j)
 	return value[i][j];
 }
 
-void maze::mapMazeToGraph(Graph &g)
 //Create a graph g that represents the legal moves in the maze m.
+void maze::mapMazeToGraph(Graph &g)
 {
 	g = Graph();
 	int counter = 0;
@@ -187,6 +194,8 @@ void maze::mapMazeToGraph(Graph &g)
 	}
 }
 
+//Prints the path represented by the vertices in stack s. Repeatedly
+//calls print() to show each step of the path.
 void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descriptor> &stack, Graph g)
 {
 	int goalI, goalJ, currI, currJ;
@@ -218,7 +227,7 @@ void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descripto
 	}
 }
 
-// Mark all nodes in g as not visited.
+//Mark all nodes in g as not visited.
 void maze::clearVisited(Graph &g)
 {
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
@@ -228,7 +237,7 @@ void maze::clearVisited(Graph &g)
 	}
 }
 
-// Set all node weights to w.
+//Set all node weights to w.
 void maze::setNodeWeights(Graph &g, int w)
 {
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
@@ -238,7 +247,7 @@ void maze::setNodeWeights(Graph &g, int w)
 	}
 }
 
-
+//Unmark all nodes
 void maze::clearMarked(Graph &g)
 {
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
@@ -248,9 +257,9 @@ void maze::clearMarked(Graph &g)
 	}
 }
 
-ostream &operator<<(ostream &ostr, const Graph &g)
 //Output operator for the Graph class. Prints out all nodes and their properties, 
 //and all edges and their properties.
+ostream &operator<<(ostream &ostr, const Graph &g)
 {
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)

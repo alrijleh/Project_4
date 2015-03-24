@@ -1,3 +1,9 @@
+/*
+Properties.h
+Contains typedef and struct definitions
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
 #pragma once
 #include <boost/graph/adjacency_list.hpp>
 
@@ -8,6 +14,7 @@ struct EdgeProperties;
 
 typedef adjacency_list<vecS, vecS, bidirectionalS, VertexProperties, EdgeProperties> Graph;
 
+//Create a struct to hold properties for each vertex
 struct VertexProperties
 {
 	std::pair<int, int> cell; // maze cell (x,y) value
@@ -17,7 +24,7 @@ struct VertexProperties
 	int weight;
 };
 
-// Create a struct to hold properties for each edge
+//Create a struct to hold properties for each edge
 struct EdgeProperties
 {
 	int weight;

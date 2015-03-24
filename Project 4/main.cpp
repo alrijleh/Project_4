@@ -1,19 +1,23 @@
+/*
+Project 4a
+Main.cpp
+Contains main functionality for project
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
+
 #include <iostream>
 #include <limits.h>
 #include <vector>
 #include <list>
 #include <fstream>
 #include <queue>
-
 #include <boost/graph/adjacency_list.hpp>
-
 //#include "heapV.h"
 #include "maze.h"
 
 using namespace boost;
 using namespace std;
-
-
 
 // typedef property<edge_weight_t, int> EdgeProperty;
 
@@ -43,8 +47,8 @@ int main()
       Graph g;
       m.mapMazeToGraph(g);
 
-	  system("pause");
-
       //cout << g << endl;
+
+	  system("pause");
    //}
 }
