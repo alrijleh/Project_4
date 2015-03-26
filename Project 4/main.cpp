@@ -40,7 +40,7 @@ int main()
 
 	m.print(m.numRows() - 1, m.numCols() - 1, 0, 0);
 
-	Graph g;
+	Graph g = Graph();
 	m.mapMazeToGraph(g);
 
 	cout << g << endl;

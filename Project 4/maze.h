@@ -50,7 +50,7 @@ public:
 	int getMapJ(int n);
 
 	//Add edges to graph
-	void checkEdges(Graph g, int i, int j);
+	void addEdges(Graph g, int i, int j);
 
 	//Print moves to complete maze
 	void printPath(Graph::vertex_descriptor end,
@@ -112,14 +112,13 @@ maze::maze(ifstream &fin)
 void maze::setMap(int i, int j, int n)
 {
 	node newNode = node();
-	if (value[i][j])
-	{
-		newNode.mark();
-	}
+	newNode.mark();
 	newNode.setId(n);
 
-	typedef graph_traits<Graph>::vertex_descriptor Vertex;
-	Vertex v = add_vertex(g);
+	Graph::vertex_descriptor v = add_vertex(g);
+	g[v].marked = true;
+	g[v].visited = false;
+
 	vMap[i][j] = v;
 }
 
@@ -176,16 +175,13 @@ void maze::print(int goalI, int goalJ, int currI, int currJ)
 //whether it is legal to go to cell (i,j).
 bool maze::isLegal(int i, int j)
 {
-	if (i < 0 || i > rows || j < 0 || j > cols)
-		throw rangeError("Bad value in maze::isLegal");
-
-	return value[i][j];
+	if (i < 0 || i >= rows || j < 0 || j >= cols) return false;
+	else return value[i][j];
 }
 
 //Create a graph g that represents the legal moves in the maze m.
 void maze::mapMazeToGraph(Graph &g)
 {
-	g = Graph();
 	int counter = 0;
 
 	//Mapping of graph
@@ -193,32 +189,38 @@ void maze::mapMazeToGraph(Graph &g)
 	{
 		for (int j = 0; j < numCols(); j++)
 		{
-			if (value[i][j])
+			if (isLegal(i, j))
 			{
 				setMap(i, j, counter++);
-				//checkEdges(g, i, j);
+				addEdges(g, i, j);
 			}
 		}
 	}
 }
 
-void maze::checkEdges(Graph g, int i, int j)
+void maze::addEdges(Graph g, int i, int j)
 {
+	/*
 	if (i - 1 > 0) if (vMap[i - 1][j] != LargeValue) //left
 	{
-		add_edge(i - 1, j, g);
+		Graph::vertex_descriptor u, v;
+		u = vMap[i][j];
+		v = vMap[i - 1][j];
+		pair<Graph::edge_descriptor, bool> newEdge = add_edge(u, v, g);
 	}
-	if (i + 1 < cols) if (vMap[i + 1][j] != LargeValue) //right
+	*/
+	for (int x = -1; x <= 1; x++) //x and y are vertical and horizantal offsets
 	{
-		add_edge(i + 1, j, g);
-	}
-	if (j - 1 > 0) if (vMap[i][j - 1] != LargeValue) //up
-	{
-		add_edge(i, j - 1, g);
-	}
-	if (j + 1 < rows) if (vMap[i][j + 1] != LargeValue) //down
-	{
-		add_edge(i, j + 1, g);
+		for (int y = -1; y <= 1; y++)
+		{
+			if (i != j && isLegal(i+x , j+y) && vMap[i+x][j+y] != LargeValue)
+			{
+				Graph::vertex_descriptor u, v;
+				u = vMap[i][j];
+				v = vMap[i+x][j+y];
+				pair<Graph::edge_descriptor, bool> newEdge = add_edge(u, v, g);
+			}
+		}
 	}
 }
 
