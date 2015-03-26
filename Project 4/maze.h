@@ -42,7 +42,7 @@ public:
 
 	//Create mapping of board to graph
 	void mapMazeToGraph(Graph &g);
-	void setMap(int i, int j, int n);
+	void setMap(Graph &g, int i, int j, int n);
 	int getMap(int i, int j);
 
 	//Gets individual row and col of mapping node
@@ -50,7 +50,7 @@ public:
 	int getMapJ(int n);
 
 	//Add edges to graph
-	void addEdges(Graph g, int i, int j);
+	void addEdges(Graph &g, int i, int j);
 
 	//Print moves to complete maze
 	void printPath(Graph::vertex_descriptor end,
@@ -109,7 +109,7 @@ maze::maze(ifstream &fin)
 }
 
 //Sets Map
-void maze::setMap(int i, int j, int n)
+void maze::setMap(Graph &g, int i, int j, int n)
 {
 	node newNode = node();
 	newNode.mark();
@@ -191,14 +191,14 @@ void maze::mapMazeToGraph(Graph &g)
 		{
 			if (isLegal(i, j))
 			{
-				setMap(i, j, counter++);
+				setMap(g, i, j, counter++);
 				addEdges(g, i, j);
 			}
 		}
 	}
 }
 
-void maze::addEdges(Graph g, int i, int j)
+void maze::addEdges(Graph &g, int i, int j)
 {
 	/*
 	if (i - 1 > 0) if (vMap[i - 1][j] != LargeValue) //left
