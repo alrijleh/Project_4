@@ -70,6 +70,10 @@ public:
 	//Mark all nodes in g as not marked
 	void clearMarked(Graph &g);
 
+	void findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v);
+	void findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack);
+	void findShortestPathDFS();
+	void findShortestPathBFS(Graph &g, queue<Graph::vertex_descriptor> &queue);
 
 private:
 	int rows; //number of rows in the maze
@@ -278,6 +282,77 @@ void maze::clearMarked(Graph &g)
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
 		g[*vItr].marked = false;
+	}
+}
+
+//Looks for path from start to goal using DFS using recursion
+void maze::findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v)
+{
+	g[v].visited = true;
+
+	pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
+	for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+	{
+		if (g[*w].visited == false)
+		{
+			findPathDFSRecursive(g, *w);
+		}
+	}
+}
+
+//Looks for path from start to goal using DFS using a stack not recursion
+void maze::findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack)
+{
+	clearVisited(g);
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
+	Graph::vertex_iterator vItr = vItrRange.first;
+	stack.push(*vItr);
+	g[*vItr].visited = true;
+	while (stack.size() != 0)
+	{
+		Graph::vertex_descriptor v = stack.top();
+		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
+		for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+		{
+			if (g[*w].visited == false)
+			{
+				g[*w].visited = true;
+				stack.push(*w);
+			}
+			else
+			{
+				stack.pop();
+			}			
+		}
+	}
+}
+
+//Looks for shortest path from start to goal using DFS
+void findShortestPathDFS()
+{
+}
+
+//Looks for shortest path from start to goal using BFS
+void maze::findShortestPathBFS(Graph &g, queue<Graph::vertex_descriptor> &queue)
+{
+	clearVisited(g);
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
+	Graph::vertex_iterator vItr = vItrRange.first;
+	queue.push(*vItr);
+	g[*vItr].visited = true;
+	while (queue.size() != 0)
+	{
+		Graph::vertex_descriptor v = queue.front();
+		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
+		for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+		{
+			if (g[*w].visited == false)
+			{
+				g[*w].visited = true;
+				queue.push(*w);
+			}
+		}
+		queue.pop();
 	}
 }
 
