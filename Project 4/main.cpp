@@ -40,10 +40,27 @@ int main()
 
 	m.print(m.numRows() - 1, m.numCols() - 1, 0, 0);
 
+	//initialzing
 	Graph g = Graph();
 	m.mapMazeToGraph(g);
 
-	cout << g << endl;
+	//Solving
+	//DFS Rescursive
+	Graph::vertex_descriptor startVertex = *vertices(g).first;
+	if (!m.findPathDFSRecursive(g, startVertex))
+	{
+		cout << "No path exists" << endl;
+	}
+
+	//DFS Stack
+	stack<Graph::vertex_descriptor> vertexStack;
+	m.findPathDFSStack(g, vertexStack);
+
+	//BFS
+	queue<Graph::vertex_descriptor> vertexQueue;
+	m.findShortestPathBFS(g, vertexQueue);
+
+	//cout << g << endl;
 
 	system("pause");
 }

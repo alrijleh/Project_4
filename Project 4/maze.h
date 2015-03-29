@@ -70,7 +70,7 @@ public:
 	//Mark all nodes in g as not marked
 	void clearMarked(Graph &g);
 
-	void findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v);
+	bool findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v);
 	void findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack);
 	void findShortestPathDFS();
 	void findShortestPathBFS(Graph &g, queue<Graph::vertex_descriptor> &queue);
@@ -288,18 +288,24 @@ void maze::clearMarked(Graph &g)
 }
 
 //Looks for path from start to goal using DFS using recursion
-void maze::findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v)
+bool maze::findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v)
 {
 	g[v].visited = true;
 
 	pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
-	for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+	Graph::adjacency_iterator w = vItrAdjRange.first;
+	//for (w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+	do
 	{
 		if (g[*w].visited == false)
 		{
-			findPathDFSRecursive(g, *w);
+			print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
+			if (g[*w].cell.first == rows - 1 && g[*w].cell.second == cols - 1) return true; //if at end of the maze
+			else return findPathDFSRecursive(g, *w);
 		}
-	}
+		w++;
+	} while (w != vItrAdjRange.second);
+	return false;
 }
 
 //Looks for path from start to goal using DFS using a stack not recursion
@@ -314,8 +320,11 @@ void maze::findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack)
 	{
 		Graph::vertex_descriptor v = stack.top();
 		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
-		for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+		//for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+		Graph::adjacency_iterator w = vItrAdjRange.first;
+		do
 		{
+			if (g[*w].cell.first == rows - 1 && g[*w].cell.second == cols - 1) return; //if at target (bottom right)
 			if (g[*w].visited == false)
 			{
 				g[*w].visited = true;
@@ -324,9 +333,12 @@ void maze::findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack)
 			else
 			{
 				stack.pop();
-			}			
-		}
+			}
+			print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
+			w++;
+		} while (w != vItrAdjRange.second);
 	}
+	cout << "No path exists" << endl;
 }
 
 //Looks for shortest path from start to goal using DFS
@@ -346,14 +358,18 @@ void maze::findShortestPathBFS(Graph &g, queue<Graph::vertex_descriptor> &queue)
 	{
 		Graph::vertex_descriptor v = queue.front();
 		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
-		for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+		//for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+		Graph::adjacency_iterator w = vItrAdjRange.first;
+		do
 		{
+
 			if (g[*w].visited == false)
 			{
 				g[*w].visited = true;
 				queue.push(*w);
 			}
-		}
+			w++;
+		} while (w != vItrAdjRange.second);
 		queue.pop();
 	}
 }
