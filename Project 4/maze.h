@@ -366,20 +366,20 @@ ostream &operator<<(ostream &ostr, const Graph &g)
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
 
-		ostr << "Node " << *vItr << " Properties" << endl;
-		ostr << "Marked: " << g[*vItr].marked << endl;
-		ostr << "Visited: " << g[*vItr].visited << endl;
-		ostr << "Weight: " << g[*vItr].weight << endl << endl;
+		ostr << "Node " << *vItr;
+		ostr << " | Marked: " << g[*vItr].marked;
+		ostr << " | Visited: " << g[*vItr].visited << endl;
 	}
+	cout << endl;
 
 	pair<Graph::edge_iterator, Graph::edge_iterator> eItrRange = edges(g);
 	for (Graph::edge_iterator eItr = eItrRange.first; eItr != eItrRange.second; ++eItr)
 	{
 
-		ostr << "Edge " << *eItr << " Properties" << endl;
-		ostr << "Marked: " << g[*eItr].marked << endl;
-		ostr << "Visited: " << g[*eItr].visited << endl;
-		ostr << "Weight: " << g[*eItr].weight << endl << endl;
+		ostr << "Edge " << *eItr;
+		ostr << " | Marked: " << g[*eItr].marked;
+		ostr << " | Visited: " << g[*eItr].visited << endl;
+		//ostr << "Weight: " << g[*eItr].weight << endl << endl;
 	}
 
 	return ostr;
