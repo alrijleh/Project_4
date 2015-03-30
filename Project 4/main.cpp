@@ -45,6 +45,7 @@ int main()
 	m.mapMazeToGraph(g);
 
 	//Solving
+
 	//DFS Rescursive
 	Graph::vertex_descriptor startVertex = *vertices(g).first;
 	if (!m.findPathDFSRecursive(g, startVertex))
@@ -59,6 +60,9 @@ int main()
 	//BFS
 	queue<Graph::vertex_descriptor> vertexQueue;
 	m.findShortestPathBFS(g, vertexQueue);
+
+	//Shortest DFS
+	m.findShortestPathDFS(g, vertexStack);
 
 	//cout << g << endl;
 
