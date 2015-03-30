@@ -36,7 +36,7 @@ public:
 
 	//Print
 	void print(int, int, int, int);
-	void printOverload(int goalI, int goalJ, int currI, int currJ, int lookI, int lookJ);
+	void print(int goalI, int goalJ, int currI, int currJ, int lookI, int lookJ);
 	
 	//Determine if legal to move to cell
 	bool isLegal(int i, int j);
@@ -110,7 +110,7 @@ maze::maze(ifstream &fin)
 	vMap.resize(rows, cols);
 }
 
-//Sets Map
+//Creates vMap, vList, and new vectors.
 void maze::setMap(Graph &g, int i, int j, int n)
 {
 	node newNode = node();
@@ -175,7 +175,8 @@ void maze::print(int goalI, int goalJ, int currI, int currJ)
 	cout << endl;
 }
 
-void maze::printOverload(int goalI, int goalJ, int currI, int currJ, int lookI, int lookJ)
+//Print out a maze, with the goal and current cells marked on the board.  Also prints where the function is currently looking
+void maze::print(int goalI, int goalJ, int currI, int currJ, int lookI, int lookJ)
 {
 	cout << endl;
 
@@ -322,12 +323,11 @@ bool maze::findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v)
 			print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
 			if (vList[*w].first == rows - 1 && vList[*w].second == cols - 1)
 				return true; //if at end of the maze
-			else if(findPathDFSRecursive(g, *w)) return true;
+			else if(findPathDFSRecursive(g, *w)) return true; //pass true back through unrecursions
 		}
-
 	}
 	g[v].visited = false;
-	return false;
+	return false; //return false if the end was never reached
 }
 
 //Looks for path from start to goal using DFS using a stack not recursion

@@ -54,19 +54,22 @@ int main()
 	{
 		cout << "Path found" << endl;
 	}
+	system("pause");
 
 	//DFS Stack
 	stack<Graph::vertex_descriptor> vertexStack;
 	m.findPathDFSStack(g, vertexStack);
+	system("pause");
 
 	//BFS
 	queue<Graph::vertex_descriptor> vertexQueue;
 	m.findShortestPathBFS(g, vertexQueue);
+	system("pause");
 
 	//Shortest DFS
 	m.findShortestPathDFS(g, vertexStack);
+	system("pause");
 
 	//cout << g << endl; //prints out all created vertices and edges
-
-	system("pause");
+	//system("pause");
 }
