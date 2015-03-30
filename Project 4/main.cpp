@@ -21,8 +21,6 @@ using namespace std;
 
 int main()
 {
-	//try
-	//{
 	ifstream fin;
 
 	// Read the maze from the file.
@@ -47,28 +45,28 @@ int main()
 	//Solving
 
 	//DFS Rescursive
-	//Graph::vertex_descriptor startVertex = *vertices(g).first;
-	//if (!m.findPathDFSRecursive(g, startVertex))
-	//{
-	//	cout << "No path exists" << endl;
-	//}
-	//else
-	//{
-	//	cout << "Path found" << endl;
-	//}
+	Graph::vertex_descriptor startVertex = *vertices(g).first;
+	if (!m.findPathDFSRecursive(g, startVertex))
+	{
+		cout << "No path exists" << endl;
+	}
+	else
+	{
+		cout << "Path found" << endl;
+	}
 
 	//DFS Stack
 	stack<Graph::vertex_descriptor> vertexStack;
-	//m.findPathDFSStack(g, vertexStack);
+	m.findPathDFSStack(g, vertexStack);
 
 	//BFS
 	queue<Graph::vertex_descriptor> vertexQueue;
-	//m.findShortestPathBFS(g, vertexQueue);
+	m.findShortestPathBFS(g, vertexQueue);
 
 	//Shortest DFS
-	//m.findShortestPathDFS(g, vertexStack);
+	m.findShortestPathDFS(g, vertexStack);
 
-	//cout << g << endl;
+	//cout << g << endl; //prints out all created vertices and edges
 
 	system("pause");
 }

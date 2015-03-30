@@ -80,11 +80,9 @@ private:
 	int rows; //number of rows in the maze
 	int cols; //number of columns in the maze
 
-	Graph::vertex_descriptor target;
-
 	matrix<bool> value;
 	matrix<Graph::vertex_descriptor> vMap;
-	vector<pair<int, int>> vList;
+	vector<pair<int, int>> vList; //Index is the vertex identifier, contents are the location -- inverse of vMap
 
 	Graph g;
 };
@@ -123,10 +121,6 @@ void maze::setMap(Graph &g, int i, int j, int n)
 	g[v].marked = true;
 	g[v].visited = false;
 
-	if (i == cols - 1 && j == rows - 1)
-	{
-		target = v;
-	}
 	vMap[i][j] = v;
 	pair<int, int> location = { i, j };
 	vList.push_back(location);
@@ -281,22 +275,6 @@ void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descripto
 		currJ = getMapJ(stack.top());
 		stack.pop();
 		print(goalI, goalJ, currI, currJ);
-		/*
-		if (i == 0)
-		cout << "Complete" << endl;
-
-		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] + 1)
-		cout << "Move Right" << endl;
-
-		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] - 1)
-		cout << "Move Left" << endl;
-
-		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] - numCols())
-		cout << "Move Up" << endl;
-
-		else if (i > 0 && stack._Get_container[i - 1] == stack._Get_container[i] + numCols())
-		cout << "Move Down" << endl;
-		*/
 	}
 }
 
