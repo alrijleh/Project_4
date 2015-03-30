@@ -1,3 +1,11 @@
+/*
+Project 4b
+Main.cpp
+Contains function calls to perform maze solution
+
+Fouad Al-Rijleh, Rachel Rudolph
+*/
+
 #include <iostream>
 #include <limits.h>
 #include <vector>
