@@ -13,8 +13,6 @@
 using namespace boost;
 using namespace std;
 
-
-
 // typedef property<edge_weight_t, int> EdgeProperty;
 
 #define LargeValue 99999999

@@ -54,9 +54,8 @@ public:
 	void addEdges(Graph &g, int i, int j);
 
 	//Print moves to complete maze
-	void printPath(Graph::vertex_descriptor end,
-		stack<Graph::vertex_descriptor> &stack,
-		Graph g);
+	void printPath(stack<Graph::vertex_descriptor> &stack, Graph g);
+	void printPath(queue<Graph::vertex_descriptor> &queue, Graph g);
 
 	//Number of rows and columns
 	int numRows(){ return rows; };
@@ -71,6 +70,7 @@ public:
 	//Mark all nodes in g as not marked
 	void clearMarked(Graph &g);
 
+	//algorithms for solving
 	bool findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v);
 	void findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack);
 	void findShortestPathDFS(Graph &g, stack<Graph::vertex_descriptor> &currentStack);
@@ -264,7 +264,7 @@ void maze::addEdges(Graph &g, int i, int j)
 
 //Prints the path represented by the vertices in stack s. Repeatedly
 //calls print() to show each step of the path.
-void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descriptor> &stack, Graph g)
+void maze::printPath(stack<Graph::vertex_descriptor> &stack, Graph g)
 {
 	int goalI, goalJ, currI, currJ;
 	goalI = rows - 1;
@@ -275,6 +275,21 @@ void maze::printPath(Graph::vertex_descriptor end, stack<Graph::vertex_descripto
 		currI = getMapI(stack.top());
 		currJ = getMapJ(stack.top());
 		stack.pop();
+		print(goalI, goalJ, currI, currJ);
+	}
+}
+
+void maze::printPath(queue<Graph::vertex_descriptor> &queue, Graph g)
+{
+	int goalI, goalJ, currI, currJ;
+	goalI = rows - 1;
+	goalJ = cols - 1;
+
+	for (int i = queue.size(); i > 0; i--)
+	{
+		currI = getMapI(queue.front());
+		currJ = getMapJ(queue.front());
+		queue.pop();
 		print(goalI, goalJ, currI, currJ);
 	}
 }
@@ -320,7 +335,7 @@ bool maze::findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v)
 	{
 		if (g[*w].visited == false)
 		{
-			print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
+			//print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
 			if (vList[*w].first == rows - 1 && vList[*w].second == cols - 1)
 				return true; //if at end of the maze
 			else if(findPathDFSRecursive(g, *w)) return true; //pass true back through unrecursions
@@ -346,7 +361,7 @@ void maze::findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack)
 		{
 			if (vList[*w].first == rows - 1 && vList[*w].second == cols - 1) //if at end of the maze
 			{
-				cout << "Reached Goal" << endl;
+				cout << "Path found" << endl;
 				return;
 			}
 			if (g[*w].visited == false)
@@ -358,7 +373,7 @@ void maze::findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack)
 			{
 				stack.pop();
 			}
-			print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
+			//print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
 		}
 	}
 	cout << "No path exists" << endl;
@@ -397,7 +412,7 @@ void maze::findShortestPathDFS(Graph &g, stack<Graph::vertex_descriptor> &curren
 			{
 				currentStack.pop();
 			}
-			print(rows - 1, cols - 1, vList[v].first, vList[v].second);
+			//print(rows - 1, cols - 1, vList[v].first, vList[v].second);
 		}
 		w--;
 		g[*w].visited == false;
@@ -422,13 +437,13 @@ void maze::findShortestPathBFS(Graph &g, queue<Graph::vertex_descriptor> &queue)
 		{
 			if (vList[*w].first == rows - 1 && vList[*w].second == cols - 1) //if at end of the maze
 			{
-				cout << "Reached Goal" << endl;
+				cout << "Path found" << endl;
 				return;
 			}
 
 			if (g[*w].visited == false)
 			{
-				print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
+				//print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
 				g[*w].visited = true;
 				queue.push(*w);
 			}
