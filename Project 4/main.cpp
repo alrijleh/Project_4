@@ -52,6 +52,10 @@ int main()
 	//{
 	//	cout << "No path exists" << endl;
 	//}
+	//else
+	//{
+	//	cout << "Path found" << endl;
+	//}
 
 	//DFS Stack
 	stack<Graph::vertex_descriptor> vertexStack;
@@ -62,7 +66,7 @@ int main()
 	//m.findShortestPathBFS(g, vertexQueue);
 
 	//Shortest DFS
-	m.findShortestPathDFS(g, vertexStack);
+	//m.findShortestPathDFS(g, vertexStack);
 
 	//cout << g << endl;
 

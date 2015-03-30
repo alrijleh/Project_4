@@ -36,7 +36,8 @@ public:
 
 	//Print
 	void print(int, int, int, int);
-
+	void printOverload(int goalI, int goalJ, int currI, int currJ, int lookI, int lookJ);
+	
 	//Determine if legal to move to cell
 	bool isLegal(int i, int j);
 
@@ -180,6 +181,38 @@ void maze::print(int goalI, int goalJ, int currI, int currJ)
 	cout << endl;
 }
 
+void maze::printOverload(int goalI, int goalJ, int currI, int currJ, int lookI, int lookJ)
+{
+	cout << endl;
+
+	if (goalI < 0 || goalI > rows || goalJ < 0 || goalJ > cols)
+		throw rangeError("Bad value in maze::print");
+
+	if (currI < 0 || currI > rows || currJ < 0 || currJ > cols)
+		throw rangeError("Bad value in maze::print");
+
+	for (int i = 0; i <= rows - 1; i++)
+	{
+		for (int j = 0; j <= cols - 1; j++)
+		{
+			if (i == goalI && j == goalJ)
+				cout << "*";
+			else
+				if (i == currI && j == currJ)
+					cout << "+";
+				else if (i == lookI && j == lookJ)
+					cout << "^";
+				else
+					if (value[i][j])
+						cout << " ";
+					else
+						cout << "X";
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
+
 //Return the value stored at the (i,j) entry in the maze, indicating
 //whether it is legal to go to cell (i,j).
 bool maze::isLegal(int i, int j)
@@ -309,10 +342,13 @@ bool maze::findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v)
 		if (g[*w].visited == false)
 		{
 			print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
-			if (*w == target) return true; //if at end of the maze
-			else return findPathDFSRecursive(g, *w);
+			if (vList[*w].first == rows - 1 && vList[*w].second == cols - 1)
+				return true; //if at end of the maze
+			else if(findPathDFSRecursive(g, *w)) return true;
 		}
+
 	}
+	g[v].visited = false;
 	return false;
 }
 
@@ -330,7 +366,7 @@ void maze::findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack)
 		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
 		for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
 		{
-			if (*w == target) //if at end of the maze
+			if (vList[*w].first == rows - 1 && vList[*w].second == cols - 1) //if at end of the maze
 			{
 				cout << "Reached Goal" << endl;
 				return;
@@ -367,7 +403,7 @@ void maze::findShortestPathDFS(Graph &g, stack<Graph::vertex_descriptor> &curren
 		Graph::adjacency_iterator w = vItrAdjRange.first;
 		for (w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
 		{
-			if (*w == target) //if at end of the maze
+			if (vList[*w].first == rows - 1 && vList[*w].second == cols - 1) //if at end of the maze
 			{
 				if (shortestStack.size() == 0 || currentStack.size() < shortestStack.size())
 				{
@@ -383,7 +419,7 @@ void maze::findShortestPathDFS(Graph &g, stack<Graph::vertex_descriptor> &curren
 			{
 				currentStack.pop();
 			}
-			print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
+			print(rows - 1, cols - 1, vList[v].first, vList[v].second);
 		}
 		w--;
 		g[*w].visited == false;
@@ -406,7 +442,7 @@ void maze::findShortestPathBFS(Graph &g, queue<Graph::vertex_descriptor> &queue)
 		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
 		for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
 		{
-			if (*w == target) //if at end of the maze
+			if (vList[*w].first == rows - 1 && vList[*w].second == cols - 1) //if at end of the maze
 			{
 				cout << "Reached Goal" << endl;
 				return;
@@ -432,7 +468,7 @@ ostream &operator<<(ostream &ostr, const Graph &g)
 	{
 
 		ostr << "Node " << *vItr;
-		ostr << " | Marked: " << g[*vItr].marked;
+		//ostr << " | Marked: " << g[*vItr].marked;
 		ostr << " | Visited: " << g[*vItr].visited << endl;
 	}
 	cout << endl;
@@ -442,7 +478,7 @@ ostream &operator<<(ostream &ostr, const Graph &g)
 	{
 
 		ostr << "Edge " << *eItr;
-		ostr << " | Marked: " << g[*eItr].marked;
+		//ostr << " | Marked: " << g[*eItr].marked;
 		ostr << " | Visited: " << g[*eItr].visited << endl;
 		//ostr << "Weight: " << g[*eItr].weight << endl << endl;
 	}
