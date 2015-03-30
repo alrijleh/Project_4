@@ -47,19 +47,19 @@ int main()
 	//Solving
 
 	//DFS Rescursive
-	Graph::vertex_descriptor startVertex = *vertices(g).first;
-	if (!m.findPathDFSRecursive(g, startVertex))
-	{
-		cout << "No path exists" << endl;
-	}
+	//Graph::vertex_descriptor startVertex = *vertices(g).first;
+	//if (!m.findPathDFSRecursive(g, startVertex))
+	//{
+	//	cout << "No path exists" << endl;
+	//}
 
 	//DFS Stack
 	stack<Graph::vertex_descriptor> vertexStack;
-	m.findPathDFSStack(g, vertexStack);
+	//m.findPathDFSStack(g, vertexStack);
 
 	//BFS
 	queue<Graph::vertex_descriptor> vertexQueue;
-	m.findShortestPathBFS(g, vertexQueue);
+	//m.findShortestPathBFS(g, vertexQueue);
 
 	//Shortest DFS
 	m.findShortestPathDFS(g, vertexStack);

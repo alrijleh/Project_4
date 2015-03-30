@@ -79,6 +79,8 @@ private:
 	int rows; //number of rows in the maze
 	int cols; //number of columns in the maze
 
+	Graph::vertex_descriptor target;
+
 	matrix<bool> value;
 	matrix<Graph::vertex_descriptor> vMap;
 
@@ -119,6 +121,10 @@ void maze::setMap(Graph &g, int i, int j, int n)
 	g[v].marked = true;
 	g[v].visited = false;
 
+	if (i == cols - 1 && j == rows - 1)
+	{
+		target = v;
+	}
 	vMap[i][j] = v;
 }
 
@@ -213,12 +219,13 @@ void maze::addEdges(Graph &g, int i, int j)
 	{
 		for (int y = -1; y <= 1; y++)
 		{
-			if (i != j && isLegal(i+x , j+y) && vMap[i+x][j+y] != LargeValue)
+			if (i != j && isLegal(i+x, j+y) && vMap[i+x][j+y] != LargeValue && x != y)
 			{
 				Graph::vertex_descriptor u, v;
 				u = vMap[i][j];
 				v = vMap[i+x][j+y];
-				pair<Graph::edge_descriptor, bool> newEdge = add_edge(u, v, g);
+				add_edge(u, v, g);
+				add_edge(v, u, g); //make bidirectional edges
 			}
 		}
 	}
@@ -294,17 +301,15 @@ bool maze::findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v)
 
 	pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
 	Graph::adjacency_iterator w = vItrAdjRange.first;
-	//for (w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
-	do
+	for (w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
 	{
 		if (g[*w].visited == false)
 		{
 			print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
-			if (g[*w].cell.first == rows - 1 && g[*w].cell.second == cols - 1) return true; //if at end of the maze
+			if (*w == target) return true; //if at end of the maze
 			else return findPathDFSRecursive(g, *w);
 		}
-		w++;
-	} while (w != vItrAdjRange.second);
+	}
 	return false;
 }
 
@@ -320,11 +325,13 @@ void maze::findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack)
 	{
 		Graph::vertex_descriptor v = stack.top();
 		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
-		//for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
-		Graph::adjacency_iterator w = vItrAdjRange.first;
-		do
+		for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
 		{
-			if (g[*w].cell.first == rows - 1 && g[*w].cell.second == cols - 1) return; //if at target (bottom right)
+			if (*w == target) //if at end of the maze
+			{
+				cout << "Reached Goal" << endl;
+				return;
+			}
 			if (g[*w].visited == false)
 			{
 				g[*w].visited = true;
@@ -335,8 +342,7 @@ void maze::findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack)
 				stack.pop();
 			}
 			print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
-			w++;
-		} while (w != vItrAdjRange.second);
+		}
 	}
 	cout << "No path exists" << endl;
 }
@@ -356,9 +362,9 @@ void maze::findShortestPathDFS(Graph &g, stack<Graph::vertex_descriptor> &curren
 		Graph::vertex_descriptor v = currentStack.top();
 		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
 		Graph::adjacency_iterator w = vItrAdjRange.first;
-		do
+		for (w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
 		{
-			if (g[*w].cell.first == rows - 1 && g[*w].cell.second == cols - 1) //if at target (bottom right)
+			if (*w == target) //if at end of the maze
 			{
 				if (shortestStack.size() == 0 || currentStack.size() < shortestStack.size())
 				{
@@ -375,11 +381,12 @@ void maze::findShortestPathDFS(Graph &g, stack<Graph::vertex_descriptor> &curren
 				currentStack.pop();
 			}
 			print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
-			w++;
-		} while (w != vItrAdjRange.second);
-	g[*w].visited == false;
+		}
+		w--;
+		g[*w].visited == false;
 	}
-	cout << "No path exists" << endl;
+	if (shortestStack.size() == 0) cout << "No path exists" << endl;
+	else cout << "Shortest path is " << shortestStack.size() << " steps long" << endl;
 }
 
 //Looks for shortest path from start to goal using BFS
@@ -394,18 +401,21 @@ void maze::findShortestPathBFS(Graph &g, queue<Graph::vertex_descriptor> &queue)
 	{
 		Graph::vertex_descriptor v = queue.front();
 		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
-		//for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
-		Graph::adjacency_iterator w = vItrAdjRange.first;
-		do
+		for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
 		{
+			if (*w == target) //if at end of the maze
+			{
+				cout << "Reached Goal" << endl;
+				return;
+			}
 
 			if (g[*w].visited == false)
 			{
+				print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
 				g[*w].visited = true;
 				queue.push(*w);
 			}
-			w++;
-		} while (w != vItrAdjRange.second);
+		}
 		queue.pop();
 	}
 }
