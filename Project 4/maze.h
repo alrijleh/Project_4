@@ -83,6 +83,7 @@ private:
 
 	matrix<bool> value;
 	matrix<Graph::vertex_descriptor> vMap;
+	vector<pair<int, int>> vList;
 
 	Graph g;
 };
@@ -126,6 +127,8 @@ void maze::setMap(Graph &g, int i, int j, int n)
 		target = v;
 	}
 	vMap[i][j] = v;
+	pair<int, int> location = { i, j };
+	vList.push_back(location);
 }
 
 //Return Map
@@ -305,7 +308,7 @@ bool maze::findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v)
 	{
 		if (g[*w].visited == false)
 		{
-			print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
+			print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
 			if (*w == target) return true; //if at end of the maze
 			else return findPathDFSRecursive(g, *w);
 		}
@@ -341,7 +344,7 @@ void maze::findPathDFSStack(Graph &g, stack<Graph::vertex_descriptor> &stack)
 			{
 				stack.pop();
 			}
-			print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
+			print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
 		}
 	}
 	cout << "No path exists" << endl;
@@ -380,7 +383,7 @@ void maze::findShortestPathDFS(Graph &g, stack<Graph::vertex_descriptor> &curren
 			{
 				currentStack.pop();
 			}
-			print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
+			print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
 		}
 		w--;
 		g[*w].visited == false;
@@ -411,7 +414,7 @@ void maze::findShortestPathBFS(Graph &g, queue<Graph::vertex_descriptor> &queue)
 
 			if (g[*w].visited == false)
 			{
-				print(rows - 1, cols - 1, g[*w].cell.first, g[*w].cell.second);
+				print(rows - 1, cols - 1, vList[*w].first, vList[*w].second);
 				g[*w].visited = true;
 				queue.push(*w);
 			}
