@@ -15,7 +15,7 @@ Fouad Al-Rijleh, Rachel Rudolph
 
 #include <boost/graph/adjacency_list.hpp>
 
-//#include "heapV.h"
+#include "heapV.h"
 #include "maze.h"
 
 using namespace boost;
