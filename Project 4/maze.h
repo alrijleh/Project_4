@@ -62,13 +62,13 @@ public:
 	int numCols(){ return cols; };
 
 	//Mark all nodes in g as not visited.
-	void clearVisited(Graph &g);
+	//void clearVisited(Graph &g);
 
 	//Set all node weights to w.
-	void setNodeWeights(Graph &g, int w);
+	//void setNodeWeights(Graph &g, int w);
 
 	//Mark all nodes in g as not marked
-	void clearMarked(Graph &g);
+	//void clearMarked(Graph &g);
 
 	//algorithms for solving
 	bool findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v);
@@ -295,7 +295,7 @@ void maze::printPath(queue<Graph::vertex_descriptor> &queue, Graph g)
 }
 
 //Mark all nodes in g as not visited.
-void maze::clearVisited(Graph &g)
+void clearVisited(Graph &g)
 {
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
@@ -305,7 +305,7 @@ void maze::clearVisited(Graph &g)
 }
 
 //Set all node weights to w.
-void maze::setNodeWeights(Graph &g, int w)
+void setNodeWeights(Graph &g, int w)
 {
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
@@ -315,7 +315,7 @@ void maze::setNodeWeights(Graph &g, int w)
 }
 
 //Unmark all nodes
-void maze::clearMarked(Graph &g)
+void clearMarked(Graph &g)
 {
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)

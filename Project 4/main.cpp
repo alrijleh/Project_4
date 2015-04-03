@@ -23,19 +23,35 @@ using namespace std;
 
 #define LargeValue 99999999
 
-void relax(Graph &g, Graph::vertex_descriptor u, Graph::vertex_descriptor v)
+void relax(Graph &g, Graph::edge_descriptor e)
 {
-
+	Graph::vertex_descriptor u, v;
+	u = source(e, g);
+	v = target(e, g);
+	if (g[v].weight > g[u].weight) // + weight(u, v))
+	{
+		g[v].weight = g[u].weight; // + weight(u,v)
+		g[v].pred = u;
+	}
 }
 
 bool bellmanFord(Graph &g, Graph::vertex_descriptor s)
 {
+	setNodeWeights(g, LargeValue);
+	g[s].weight = 0;
 
+	pair<Graph::edge_iterator, Graph::edge_iterator> eItrRange = edges(g);
+	for (Graph::edge_iterator eItr = eItrRange.first; eItr != eItrRange.second; ++eItr)
+	{
+		relax(g, *eItr);
+	}
 }
 
 bool dijkstra(Graph &g, Graph::vertex_descriptor s)
 {
-
+	clearVisited(g);
+	setNodeWeights(g, LargeValue);
+	g[s].weight = 0;
 }
 
 
