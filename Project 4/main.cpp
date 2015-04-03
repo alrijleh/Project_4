@@ -21,9 +21,23 @@ Fouad Al-Rijleh, Rachel Rudolph
 using namespace boost;
 using namespace std;
 
-// typedef property<edge_weight_t, int> EdgeProperty;
-
 #define LargeValue 99999999
+
+void relax(Graph &g, Graph::vertex_descriptor u, Graph::vertex_descriptor v)
+{
+
+}
+
+bool bellmanFord(Graph &g, Graph::vertex_descriptor s)
+{
+
+}
+
+bool dijkstra(Graph &g, Graph::vertex_descriptor s)
+{
+
+}
+
 
 int main()
 {
