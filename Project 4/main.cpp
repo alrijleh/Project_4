@@ -47,12 +47,12 @@ bool bellmanFord(Graph &g, Graph::vertex_descriptor s)
 	}
 }
 
-bool dijkstra(Graph &g, Graph::vertex_descriptor s)
+bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor end)
 {
 	Graph::vertex_descriptor v, w;
 	clearVisited(g);
 	setNodeWeights(g, LargeValue);
-	g[s].weight = 0;
+	g[start].weight = 0;
 
 	heapV<Graph::vertex_descriptor, Graph> heap;
 	heap.initializeMinHeap(g);
@@ -60,7 +60,7 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor s)
 	while (heap.size() != 0)
 	{
 		v = heap.extractMinHeapMinimum(g);
-		if (false) //v == end)
+		if (v == end)
 		{
 			return true;
 		}
