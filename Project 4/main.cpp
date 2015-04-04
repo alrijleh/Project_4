@@ -28,9 +28,9 @@ void relax(Graph &g, Graph::edge_descriptor e)
 	Graph::vertex_descriptor u, v;
 	u = source(e, g);
 	v = target(e, g);
-	if (g[v].weight > g[u].weight) // + weight(u, v))
+	if (g[v].weight > g[u].weight + g[e].weight)
 	{
-		g[v].weight = g[u].weight; // + weight(u,v)
+		g[v].weight = g[u].weight + g[e].weight;
 		g[v].pred = u;
 	}
 }
@@ -49,9 +49,32 @@ bool bellmanFord(Graph &g, Graph::vertex_descriptor s)
 
 bool dijkstra(Graph &g, Graph::vertex_descriptor s)
 {
+	Graph::vertex_descriptor v, w;
 	clearVisited(g);
 	setNodeWeights(g, LargeValue);
 	g[s].weight = 0;
+
+	heapV<Graph::vertex_descriptor, Graph> heap;
+	heap.initializeMinHeap(g);
+
+	while (heap.size() != 0)
+	{
+		v = heap.extractMinHeapMinimum(g);
+		if (false) //v == end)
+		{
+			return true;
+		}
+		else
+		{
+			pair<Graph::adjacency_iterator, Graph::adjacency_iterator> range = adjacent_vertices(v, g);
+			for (Graph::adjacency_iterator w = range.first; w != range.second; w++)
+			{
+				//get edge e
+				relax(g, e);
+			}
+		}
+	}
+
 }
 
 

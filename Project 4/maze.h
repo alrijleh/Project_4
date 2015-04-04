@@ -330,8 +330,7 @@ bool maze::findPathDFSRecursive(Graph &g, Graph::vertex_descriptor v)
 	g[v].visited = true;
 
 	pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrAdjRange = adjacent_vertices(v, g);
-	Graph::adjacency_iterator w = vItrAdjRange.first;
-	for (w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
+	for (Graph::adjacency_iterator w = vItrAdjRange.first; w != vItrAdjRange.second; w++)
 	{
 		if (g[*w].visited == false)
 		{

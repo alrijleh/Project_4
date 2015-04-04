@@ -18,8 +18,8 @@ class heapV
 {
 public:
    heapV();
-   void initializeMaxHeap(vector<T> list2, U &g);
-   void initializeMinHeap(vector<T> list2, U &g);
+   void initializeMaxHeap(U &g);
+   void initializeMinHeap(U &g);
    
    void maxHeapify(int i, int heapSize, U &g);
    void buildMaxHeap(int heapSize, U &g);
@@ -72,23 +72,29 @@ heapV<T,U>::heapV()
 }
 
 template <typename T, typename U>
-void heapV<T,U>::initializeMaxHeap(vector<T> list2, U &g)
+void heapV<T,U>::initializeMaxHeap(&g)
 // Initialize a max heap from values in list2.
 {
-   for (int i = 0; i < list2.size(); i++)
-      list.push_back(list2[i]);
-   
-   buildMaxHeap(size(),g);
+	//Changed from default
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
+	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
+	{
+		list.push_back(*vItr);
+	}
+	buildMaxHeap(size());
 }
 
 template <typename T, typename U>
-void heapV<T,U>::initializeMinHeap(vector<T> list2, U &g)
+void heapV<T,U>::initializeMinHeap(&g)
 // Initialize a min heap from values in list2.
 {
-   for (int i = 0; i < list2.size(); i++)
-      list.push_back(list2[i]);
-   
-   buildMaxHeap(size());
+	//Changed from default
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
+	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
+	{
+		list.push_back(*vItr);
+	}
+	buildMinHeap(size());
 }
 
 
