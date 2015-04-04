@@ -314,6 +314,16 @@ void setNodeWeights(Graph &g, int w)
 	}
 }
 
+//Set all edge weights to w.
+void setEdgeWeights(Graph &g, int w)
+{
+	pair<Graph::edge_iterator, Graph::edge_iterator> eItrRange = edges(g);
+	for (Graph::edge_iterator eItr = eItrRange.first; eItr != eItrRange.second; ++eItr)
+	{
+		g[*eItr].weight = w;
+	}
+}
+
 //Unmark all nodes
 void clearMarked(Graph &g)
 {
