@@ -1,5 +1,5 @@
 /*
-Project 4b
+Project 4c
 Main.cpp
 Contains function calls to perform maze solution
 
@@ -52,6 +52,36 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor s)
 	clearVisited(g);
 	setNodeWeights(g, LargeValue);
 	g[s].weight = 0;
+
+	priority_queue<Graph::vertex_iterator, Graph::vertex_descriptor> priorityQueue;
+
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
+	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
+	{
+		priorityQueue.push(vItr, g[*vItr].weight);
+	}
+
+	template <typename T, typename U>
+	heapV<T, U>::buildMinHeap(priorityQueue.size(), g);
+
+	while (priorityQueue.size() != 0)
+	{
+		Graph::vertex_descriptor v = priorityQueue.top();
+		priorityQueue.pop();
+	
+		//Check for v at end
+
+		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrRange = adjacent_vertices(v, g);
+		for (Graph::adjacency_iterator w = vItrRange.first; w != vItrRange.second; ++w)
+		{
+			if (g[v].weight > g[*w].weight) + // + weight(u, v))
+			{
+				g[v].weight = g[*w].weight; // + weight(u,v)
+				g[v].pred = *w;
+			}
+		}
+	}
+	
 }
 
 
