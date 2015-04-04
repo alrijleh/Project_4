@@ -52,7 +52,7 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor
 	Graph::vertex_descriptor v, w;
 	clearVisited(g);
 	setNodeWeights(g, LargeValue);
-	g[s].weight = 0;
+	g[start].weight = 0;
 
 	priority_queue<Graph::vertex_iterator, Graph::vertex_descriptor> priorityQueue;
 
@@ -70,19 +70,20 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor
 		Graph::vertex_descriptor v = priorityQueue.top();
 		priorityQueue.pop();
 	
-		//Check for v at end
-
-		pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrRange = adjacent_vertices(v, g);
-		for (Graph::adjacency_iterator w = vItrRange.first; w != vItrRange.second; ++w)
+		if (v == end)
 		{
-			if (g[v].weight > g[*w].weight) + // + weight(u, v))
+
+		}
+		else
+		{
+			pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrRange = adjacent_vertices(v, g);
+			for (Graph::adjacency_iterator w = vItrRange.first; w != vItrRange.second; ++w)
 			{
-				g[v].weight = g[*w].weight; // + weight(u,v)
-				g[v].pred = *w;
+				//get edge e = u,v
+				relax(g, e);
 			}
 		}
 	}
-	
 }
 
 
