@@ -72,7 +72,7 @@ heapV<T,U>::heapV()
 }
 
 template <typename T, typename U>
-void heapV<T,U>::initializeMaxHeap(&g)
+void heapV<T, U>::initializeMaxHeap(U &g)
 // Initialize a max heap from values in list2.
 {
 	//Changed from default
@@ -85,7 +85,7 @@ void heapV<T,U>::initializeMaxHeap(&g)
 }
 
 template <typename T, typename U>
-void heapV<T,U>::initializeMinHeap(&g)
+void heapV<T,U>::initializeMinHeap(U &g)
 // Initialize a min heap from values in list2.
 {
 	//Changed from default

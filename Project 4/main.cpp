@@ -53,37 +53,34 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor
 	clearVisited(g);
 	setNodeWeights(g, LargeValue);
 	g[start].weight = 0;
-
-	priority_queue<Graph::vertex_iterator, Graph::vertex_descriptor> priorityQueue;
+	heapV<Graph::vertex_descriptor, Graph> heap;
+	heap.initializeMinHeap(g);
 
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
-		priorityQueue.push(vItr, g[*vItr].weight);
+		heap.minHeapInsert(*vItr, g);
 	}
 
-	template <typename T, typename U>
-	heapV<T, U>::buildMinHeap(priorityQueue.size(), g);
-
-	while (priorityQueue.size() != 0)
+	while (heap.size() != 0)
 	{
-		Graph::vertex_descriptor v = priorityQueue.top();
-		priorityQueue.pop();
-	
+		v = heap.extractMinHeapMinimum(g);	
 		if (v == end)
 		{
-
+			return true;
 		}
+
 		else
 		{
 			pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrRange = adjacent_vertices(v, g);
 			for (Graph::adjacency_iterator w = vItrRange.first; w != vItrRange.second; ++w)
 			{
-				//get edge e = u,v
+				//get edge e = v, w
 				relax(g, e);
 			}
 		}
 	}
+	return false;
 }
 
 
