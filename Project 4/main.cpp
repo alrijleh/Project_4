@@ -29,10 +29,15 @@ void printPath(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descripto
 	while (current != start)
 	{
 		stack.push(current);
-		current = g[current].pred;
+		if (g[current].pred != LargeValue) current = g[current].pred;
+		else
+		{
+			cout << "No shortest path exists" << endl;
+			return;
+		}
 	}
 	//this loop prints the path
-	cout << "Path: ";
+	cout << "Path: " << start << " ";
 	while (stack.size() != 0)
 	{
 		cout << stack.top() << " ";
@@ -41,7 +46,7 @@ void printPath(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descripto
 	cout << endl;
 }
 
-void relax(Graph &g, Graph::edge_descriptor e)
+void relax(Graph &g, Graph::edge_descriptor e, Graph::vertex_descriptor start)
 {
 	Graph::vertex_descriptor u, v;
 	u = source(e, g);
@@ -53,11 +58,11 @@ void relax(Graph &g, Graph::edge_descriptor e)
 	}
 }
 
-bool bellmanFord(Graph &g, Graph::vertex_descriptor s, Graph::vertex_descriptor e)
+bool bellmanFord(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor end)
 {
 	Graph::vertex_descriptor u, v;
 	setNodeWeights(g, LargeValue);
-	g[s].weight = 0;
+	g[start].weight = 0;
 
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr) //for each node
@@ -65,7 +70,7 @@ bool bellmanFord(Graph &g, Graph::vertex_descriptor s, Graph::vertex_descriptor 
 		pair<Graph::out_edge_iterator, Graph::out_edge_iterator> range = out_edges(*vItr, g); //for each edge adjacent to that vertex
 		for (Graph::out_edge_iterator e = range.first; e != range.second; e++)
 		{
-			relax(g, *e);
+			relax(g, *e, start);
 		}
 	}
 
@@ -76,7 +81,7 @@ bool bellmanFord(Graph &g, Graph::vertex_descriptor s, Graph::vertex_descriptor 
 		v = target(*eItr, g);
 		if (g[v].weight > g[u].weight + g[*eItr].weight) return false;
 	}
-	printPath(g, s, e);
+	printPath(g, start, end);
 	return true;
 }
 
@@ -111,7 +116,7 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor
 			pair<Graph::out_edge_iterator, Graph::out_edge_iterator> range = out_edges(v, g);
 			for (Graph::out_edge_iterator e = range.first; e != range.second; e++)
 			{
-				relax(g, *e);
+				relax(g, *e, start);
 			}
 		}
 	}
@@ -140,6 +145,7 @@ void initializeGraph(Graph &g,
 			start = v;
 		if (x == endId)
 			end = v;
+		g[v].pred = LargeValue;
 	}
 	while (fin.peek() != '.')
 	{
@@ -152,11 +158,10 @@ int main()
 {
 	ifstream fin;
 
-	// Read file from the file.
+	// Read file from the keyboard
 	string fileName;
-	//cout << "Enter filename: ";
-	//cin >> fileName;
-	fileName = "graph1.txt";
+	cout << "Enter filename: ";
+	cin >> fileName;
 
 	fin.open(fileName.c_str());
 	if (!fin)
@@ -170,8 +175,8 @@ int main()
 	initializeGraph(g, start, end, fin);
 	fin.close();
 
-	if ( !bellmanFord(g, start, end) ) cout << "no shortest path exists" << endl;
+	if ( !bellmanFord(g, start, end) ) cout << "No shortest path exists" << endl;
 	system("pause");
-	if ( !dijkstra(g, start, end) ) cout << "no shortest path exists" << endl;
+	if ( !dijkstra(g, start, end) ) cout << "No shortest path exists" << endl;
 	system("pause");
 }
