@@ -37,19 +37,33 @@ void relax(Graph &g, Graph::edge_descriptor e)
 
 bool bellmanFord(Graph &g, Graph::vertex_descriptor s)
 {
+	Graph::vertex_descriptor u, v;
 	setNodeWeights(g, LargeValue);
 	g[s].weight = 0;
 
-	pair<Graph::edge_iterator, Graph::edge_iterator> eItrRange = edges(g);
-	for (Graph::edge_iterator eItr = eItrRange.first; eItr != eItrRange.second; ++eItr)
+	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
+	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr) //for each node
 	{
-		relax(g, *eItr);
+		pair<Graph::out_edge_iterator, Graph::out_edge_iterator> range = out_edges(*vItr, g); //for each edge adjacent to that vertex
+		for (Graph::out_edge_iterator e = range.first; e != range.second; e++)
+		{
+			relax(g, *e);
+		}
 	}
+
+	pair<Graph::edge_iterator, Graph::edge_iterator> eItrRange = edges(g);
+	for (Graph::edge_iterator eItr = eItrRange.first; eItr != eItrRange.second; ++eItr) //check for negative cycle
+	{
+		u = source(*eItr, g);
+		v = target(*eItr, g);
+		if (g[v].weight > g[u].weight + g[*eItr].weight) return false;
+	}
+	return true;
 }
 
 bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor end)
 {
-	Graph::vertex_descriptor v, w;
+	Graph::vertex_descriptor v;
 	clearVisited(g);
 	setNodeWeights(g, LargeValue);
 	g[start].weight = 0;
@@ -72,24 +86,57 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor
 
 		else
 		{
-			pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrRange = adjacent_vertices(v, g);
-			for (Graph::adjacency_iterator w = vItrRange.first; w != vItrRange.second; ++w)
+			//pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrRange = adjacent_vertices(v, g);
+			//for (Graph::adjacency_iterator w = vItrRange.first; w != vItrRange.second; ++w)
+			pair<Graph::out_edge_iterator, Graph::out_edge_iterator> range = out_edges(v, g);
+			for (Graph::out_edge_iterator e = range.first; e != range.second; e++)
 			{
-				//get edge e = v, w
-				relax(g, e);
+				relax(g, *e);
 			}
 		}
 	}
 	return false;
 }
 
+void initializeGraph(Graph &g,
+	Graph::vertex_descriptor &start,
+	Graph::vertex_descriptor &end, ifstream &fin)
+	// Initialize g using data from fin.  Set start and end equal
+	// to the start and end nodes.
+{
+	EdgeProperties e;
+
+	int n, i, j;
+	int startId, endId;
+	fin >> n;
+	fin >> startId >> endId;
+	Graph::vertex_descriptor v;
+
+	// Add nodes.
+	for (int x = 0; x < n; x++)
+	{
+		v = add_vertex(g);
+		if (x == startId)
+			start = v;
+		if (x == endId)
+			end = v;
+	}
+	while (fin.peek() != '.')
+	{
+		fin >> i >> j >> e.weight;
+		add_edge(i, j, e, g);
+	}
+}
 
 int main()
 {
 	ifstream fin;
 
-	// Read the maze from the file.
-	string fileName = "maze1.txt";
+	// Read file from the file.
+	string fileName;
+	//cout << "Enter filename: ";
+	//cin >> fileName;
+	fileName = "graph1.txt";
 
 	fin.open(fileName.c_str());
 	if (!fin)
@@ -98,43 +145,11 @@ int main()
 		exit(1);
 	}
 
-	maze m(fin);
+	Graph g;
+	Graph::vertex_descriptor start, end;
+	initializeGraph(g, start, end, fin);
 	fin.close();
 
-	m.print(m.numRows() - 1, m.numCols() - 1, 0, 0);
-
-	//initialzing
-	Graph g = Graph();
-	m.mapMazeToGraph(g);
-
-	//Solving
-
-	//DFS Rescursive
-	Graph::vertex_descriptor startVertex = *vertices(g).first;
-	if (!m.findPathDFSRecursive(g, startVertex))
-	{
-		cout << "No path exists" << endl;
-	}
-	else
-	{
-		cout << "Path found" << endl;
-	}
-	system("pause");
-
-	//DFS Stack
-	stack<Graph::vertex_descriptor> vertexStack;
-	m.findPathDFSStack(g, vertexStack);
-	system("pause");
-
-	//BFS
-	queue<Graph::vertex_descriptor> vertexQueue;
-	m.findShortestPathBFS(g, vertexQueue);
-	system("pause");
-
-	//Shortest DFS
-	m.findShortestPathDFS(g, vertexStack);
-	system("pause");
-
-	//cout << g << endl; //prints out all created vertices and edges
-	//system("pause");
+	if ( !bellmanFord(g, start) ) cout << "no shortest path exists" << endl;
+	if ( !dijkstra(g, start, end) ) cout << "no shortest path exists" << endl;
 }

@@ -18,8 +18,6 @@ Fouad Al-Rijleh, Rachel Rudolph
 #include "node.h"
 #include <boost/graph/adjacency_list.hpp>
 
-#define LargeValue 99999999
-
 using namespace boost;
 using namespace std;
 
@@ -424,7 +422,7 @@ void maze::findShortestPathDFS(Graph &g, stack<Graph::vertex_descriptor> &curren
 			print(rows - 1, cols - 1, vList[v].first, vList[v].second);
 		}
 		w--;
-		g[*w].visited == false;
+		//g[*w].visited = false;
 	}
 	if (shortestStack.size() == 0) cout << "No path exists" << endl;
 	else cout << "Shortest path is " << shortestStack.size() << " steps long" << endl;

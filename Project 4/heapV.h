@@ -81,20 +81,20 @@ void heapV<T, U>::initializeMaxHeap(U &g)
 	{
 		list.push_back(*vItr);
 	}
-	buildMaxHeap(size());
+	buildMaxHeap(size(), g);
 }
 
 template <typename T, typename U>
 void heapV<T,U>::initializeMinHeap(U &g)
 // Initialize a min heap from values in list2.
 {
-	//Changed from default
+	//Changed from def7ault
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
 		list.push_back(*vItr);
 	}
-	buildMinHeap(size());
+	buildMinHeap(size(), g);
 }
 
 
