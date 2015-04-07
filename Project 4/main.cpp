@@ -21,7 +21,25 @@ Fouad Al-Rijleh, Rachel Rudolph
 using namespace boost;
 using namespace std;
 
-#define LargeValue 99999999
+void printPath(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor end)
+{
+	Graph::vertex_descriptor current = end;
+	stack<Graph::vertex_descriptor> stack;
+	//this loops reverses the vertices so it does not print in reverse order
+	while (current != start)
+	{
+		stack.push(current);
+		current = g[current].pred;
+	}
+	//this loop prints the path
+	cout << "Path: ";
+	while (stack.size() != 0)
+	{
+		cout << stack.top() << " ";
+		stack.pop();
+	}
+	cout << endl;
+}
 
 void relax(Graph &g, Graph::edge_descriptor e)
 {
@@ -35,7 +53,7 @@ void relax(Graph &g, Graph::edge_descriptor e)
 	}
 }
 
-bool bellmanFord(Graph &g, Graph::vertex_descriptor s)
+bool bellmanFord(Graph &g, Graph::vertex_descriptor s, Graph::vertex_descriptor e)
 {
 	Graph::vertex_descriptor u, v;
 	setNodeWeights(g, LargeValue);
@@ -58,6 +76,7 @@ bool bellmanFord(Graph &g, Graph::vertex_descriptor s)
 		v = target(*eItr, g);
 		if (g[v].weight > g[u].weight + g[*eItr].weight) return false;
 	}
+	printPath(g, s, e);
 	return true;
 }
 
@@ -81,6 +100,7 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor
 		v = heap.extractMinHeapMinimum(g);	
 		if (v == end)
 		{
+			printPath(g, start, end);
 			return true;
 		}
 
@@ -150,6 +170,8 @@ int main()
 	initializeGraph(g, start, end, fin);
 	fin.close();
 
-	if ( !bellmanFord(g, start) ) cout << "no shortest path exists" << endl;
+	if ( !bellmanFord(g, start, end) ) cout << "no shortest path exists" << endl;
+	system("pause");
 	if ( !dijkstra(g, start, end) ) cout << "no shortest path exists" << endl;
+	system("pause");
 }

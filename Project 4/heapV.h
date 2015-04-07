@@ -88,7 +88,7 @@ template <typename T, typename U>
 void heapV<T,U>::initializeMinHeap(U &g)
 // Initialize a min heap from values in list2.
 {
-	//Changed from def7ault
+	//Changed from default
 	pair<Graph::vertex_iterator, Graph::vertex_iterator> vItrRange = vertices(g);
 	for (Graph::vertex_iterator vItr = vItrRange.first; vItr != vItrRange.second; ++vItr)
 	{
