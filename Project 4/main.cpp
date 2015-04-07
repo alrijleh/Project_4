@@ -1,7 +1,7 @@
 /*
 Project 4c
 Main.cpp
-Contains function calls to perform maze solution
+Contains function calls to perform shortest path in graph solution
 
 Fouad Al-Rijleh, Rachel Rudolph
 */
@@ -22,6 +22,7 @@ using namespace boost;
 using namespace std;
 
 void printPath(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor end)
+//Prints shortest path from start to end
 {
 	Graph::vertex_descriptor current = end;
 	stack<Graph::vertex_descriptor> stack;
@@ -29,7 +30,10 @@ void printPath(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descripto
 	while (current != start)
 	{
 		stack.push(current);
-		if (g[current].pred != LargeValue) current = g[current].pred;
+		if (g[current].pred != LargeValue)
+		{
+			current = g[current].pred;
+		}
 		else
 		{
 			cout << "No shortest path exists" << endl;
@@ -37,6 +41,8 @@ void printPath(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descripto
 		}
 	}
 	//this loop prints the path
+	cout << "Start: " << start << endl;
+	cout << "End: " << end << endl;
 	cout << "Path: " << start << " ";
 	while (stack.size() != 0)
 	{
@@ -47,10 +53,12 @@ void printPath(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descripto
 }
 
 void relax(Graph &g, Graph::edge_descriptor e, Graph::vertex_descriptor start)
+//Compares edges to choose the shortest path 
 {
 	Graph::vertex_descriptor u, v;
 	u = source(e, g);
 	v = target(e, g);
+	//Chooses the edge with minimum cost
 	if (g[v].weight > g[u].weight + g[e].weight)
 	{
 		g[v].weight = g[u].weight + g[e].weight;
@@ -59,6 +67,7 @@ void relax(Graph &g, Graph::edge_descriptor e, Graph::vertex_descriptor start)
 }
 
 bool bellmanFord(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor end)
+//Finds shortest path while considering negative costs
 {
 	Graph::vertex_descriptor u, v;
 	setNodeWeights(g, LargeValue);
@@ -86,6 +95,7 @@ bool bellmanFord(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descrip
 }
 
 bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor end)
+//Finds shortest path by finding cost from start to each node 
 {
 	Graph::vertex_descriptor v;
 	clearVisited(g);
@@ -111,8 +121,6 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor
 
 		else
 		{
-			//pair<Graph::adjacency_iterator, Graph::adjacency_iterator> vItrRange = adjacent_vertices(v, g);
-			//for (Graph::adjacency_iterator w = vItrRange.first; w != vItrRange.second; ++w)
 			pair<Graph::out_edge_iterator, Graph::out_edge_iterator> range = out_edges(v, g);
 			for (Graph::out_edge_iterator e = range.first; e != range.second; e++)
 			{
@@ -123,11 +131,8 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor start, Graph::vertex_descriptor
 	return false;
 }
 
-void initializeGraph(Graph &g,
-	Graph::vertex_descriptor &start,
-	Graph::vertex_descriptor &end, ifstream &fin)
-	// Initialize g using data from fin.  Set start and end equal
-	// to the start and end nodes.
+void initializeGraph(Graph &g, Graph::vertex_descriptor &start, Graph::vertex_descriptor &end, ifstream &fin)
+// Initialize g using data from fin.  Set start and end equal to the start and end nodes.
 {
 	EdgeProperties e;
 
@@ -145,6 +150,7 @@ void initializeGraph(Graph &g,
 			start = v;
 		if (x == endId)
 			end = v;
+		//Set pred to infinity as default value
 		g[v].pred = LargeValue;
 	}
 	while (fin.peek() != '.')
@@ -175,6 +181,7 @@ int main()
 	initializeGraph(g, start, end, fin);
 	fin.close();
 
+	//If either algorithm returns false then no path was found
 	if ( !bellmanFord(g, start, end) ) cout << "No shortest path exists" << endl;
 	system("pause");
 	if ( !dijkstra(g, start, end) ) cout << "No shortest path exists" << endl;
